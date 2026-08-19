@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>درمانگاه نورا</title>
     <link rel="stylesheet" href="style.css">
+     <link rel="stylesheet" href="mobile.css">
 </head>
 <body>
 
@@ -20,6 +21,7 @@
 
       
 <!-- ================= منوی اصلی ================= -->
+
 <nav class="main-menu">
     
     <a href="shifts.html">شیفت پرسنل</a>
@@ -42,12 +44,26 @@
     </div>
 
 </nav>
+<button id="menuBtn" class="menu-btn" aria-label="باز کردن منو">☰</button>
 
+<div id="menuOverlay" class="menu-overlay"></div>
 
+<aside id="sideMenu" class="side-menu">
+    <button id="closeBtn" class="close-btn" aria-label="بستن منو">×</button>
+    <nav class="side-menu-links">
+        <a href="shifts.html">شیفت پرسنل</a>
+        <a href="pharmacy.html">داروخانه</a>
+        <a href="insurance.html">بیمه‌های طرف قرارداد</a>
+        <a href="gallery.html">گالری تصاویر</a>
+        <a href="skin.html">پوست و مو</a>
+        <div class="side-menu-label">⭐ ارزیابی پرسنل</div>
+        <a href="doctotors-evalution.html">ارزیابی پزشکان</a>
+        <a href="nurse-evaluation.html">ارزیابی پرستاران</a>
+        <a href="pharmacy-evaluation.html">ارزیابی داروخانه</a>
+    </nav>
+</aside>
 
-
-
-        <div class="contact-box">
+<div class="contact-box">
             <span class="phone-icon">☎</span>
             <div>
                 <strong>021-12345678</strong>
