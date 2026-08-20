@@ -1,9 +1,9 @@
 /* =========================================================
    MOBILE.CSS — اصلاحات ریسپانسیو درمانگاه نورا
    این فایل باید بعد از style.css لینک بشه تا رویش override کنه
-   ========================================================= /
+   ========================================================= */
 
-/ جلوگیری از اسکرول افقی کل صفحه /
+/* جلوگیری از اسکرول افقی کل صفحه */
 html, body {
     overflow-x: hidden;
     max-width: 100%;
@@ -14,13 +14,13 @@ img {
     height: auto;
 }
 
-/ =========================================================
+/* =========================================================
    منوی همبرگری (فقط ساختار — نمایش آن در @media پایین کنترل می‌شود)
    این بخش‌ها روی دسکتاپ کاملاً بی‌اثرند و چیدمان افقی را تغییر نمی‌دهند
-   ========================================================= /
+   ========================================================= */
 
 .menu-btn {
-    display: none; / فقط زیر 768px نمایش داده می‌شود /
+    display: none; /* فقط زیر 768px نمایش داده می‌شود */
     background: none;
     border: none;
     font-size: 26px;
@@ -99,9 +99,9 @@ img {
     padding: 0 8px;
 }
 
-/ =========================================================
+/* =========================================================
    تبلت و پایین‌تر
-   ========================================================= /
+   ========================================================= */
 @media (max-width: 992px) {
 
     .topbar {
@@ -178,28 +178,20 @@ img {
     }
 }
 
-/ =========================================================
+/* =========================================================
    موبایل
-   ========================================================= /
+   ========================================================= */
 @media (max-width: 600px) {
 
-    .topbar {
-        margin: 8px;
-        padding: 12px;
-        border-radius: 16px;
+    body {
+        background: #eef2f4;
     }
 
-    .brand-text h1 {
-        font-size: 21px;
-    }
+    /* =====================================================
+       هدر: منو (راست) — برند (وسط) — تماس (چپ)، مثل اپ
+       ===================================================== */
 
-    .brand-logo {
-        width: 40px;
-        height: 40px;
-        font-size: 22px;
-    }
-
-    / منوی افقی روی موبایل مخفی می‌شه، به‌جاش دکمه همبرگری نمایش داده می‌شه */
+    /* منوی افقی دسکتاپ مخفی می‌شه، دکمه‌ی همبرگری ظاهر می‌شه */
     .main-menu {
         display: none;
     }
@@ -208,61 +200,327 @@ img {
         display: flex;
     }
 
-    .contact-box {
+    .topbar {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        margin: 10px;
         padding: 10px 14px;
+        border-radius: 18px;
+        gap: 8px;
     }
 
-    .hero-content h2 {
-        font-size: 2
+    .menu-btn {
+        order: 1;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #f1f6f7;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        padding: 0;
+        flex-shrink: 0;
+    }
 
-8px;
+    .brand {
+        order: 2;
+        flex: 1;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .brand-logo {
+        display: none; /* شبیه طرح نمونه، فقط متن برند وسط می‌مونه */
+    }
+
+    .brand-text h1 {
+        font-size: 17px;
+    }
+
+    .brand-text p {
+        font-size: 10.5px;
+    }
+
+    .contact-box {
+        order: 3;
+        width: 40px;
+        height: 40px;
+        min-width: 0;
+        padding: 0;
+        border-radius: 50%;
+        background: #e3f6f7;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .contact-box > div {
+        display: none; /* شماره تماس متنی مخفی، فقط آیکون بمونه */
+    }
+
+    .phone-icon {
+        font-size: 17px;
+    }
+
+    /* =====================================================
+       هیرو: کارت با عکس بالا + متن روی زمینه‌ی تیره پایین
+       ===================================================== */
+    .hero {
+        margin: 0 10px 22px;
+        border-radius: 22px;
+        overflow: hidden;
+        box-shadow: 0 14px 34px rgba(15, 79, 89, 0.18);
+    }
+
+    .hero-image {
+        min-height: 170px;
+        border-radius: 0;
+    }
+
+    .hero-content {
+        background: linear-gradient(160deg, #0d5c66, #0a4750);
+        padding: 20px 20px 24px;
+        text-align: right;
+        align-items: flex-start;
+        border-radius: 0;
+    }
+
+    .hero-content h2,
+    .hero-content h1 {
+        color: #fff;
+        font-size: 22px;
+        line-height: 1.5;
     }
 
     .hero-content p {
-        font-size: 15px;
-        line-height: 1.8;
+        color: #cfe6e6;
+        font-size: 13px;
+        line-height: 1.9;
+        max-width: 100%;
     }
 
     .hero-buttons {
-        flex-direction: column;
-        align-items: stretch;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 8px;
+        margin-top: 6px;
     }
 
-    .btn {
-        text-align: center;
-        padding: 13px 20px;
-        font-size: 16px;
+    .hero-buttons .btn,
+    .hero-content .btn {
+        padding: 9px 18px;
+        font-size: 12.5px;
+        border-radius: 999px;
+        background: #14b8a6;
+        color: #fff;
+        border: none;
     }
 
+    .hero-buttons .btn:not(:first-child),
+    .hero-content .btn:not(:first-child) {
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        color: #fff;
+    }
+
+    /* آیکون‌های هیرو (تیم حرفه‌ای/تجهیزات/خدمات متنوع) */
     .hero-icons {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 0 10px;
+        margin-top: 16px;
     }
 
+    .hero-icons div {
+        padding: 14px 10px;
+        border-radius: 14px;
+    }
+
+    /* =====================================================
+       تیتر بخش‌ها با آندرلاین کوتاه، مثل طرح نمونه
+       ===================================================== */
     .services-shell {
-        margin: 20px auto;
-        padding: 30px 18px 35px;
+        margin: 20px 10px;
+        padding: 26px 16px 30px;
         border-radius: 20px;
     }
 
+    .section-head {
+        text-align: right;
+        margin-bottom: 16px;
+    }
+
+    .section-head span {
+        font-size: 11px;
+    }
+
     .section-head h3 {
-        font-size: 30px;
+        font-size: 20px;
+        position: relative;
+        display: inline-block;
+        padding-bottom: 8px;
+        margin-top: 4px;
+    }
+
+    .section-head h3::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 32px;
+        height: 3px;
+        border-radius: 3px;
+        background: #14b8a6;
     }
 
     .section-head p {
+        font-size: 13px;
+    }
+
+    /* =====================================================
+       خدمات: سه‌ستونه با آیکون دایره‌ای، مثل طرح نمونه
+       ===================================================== */
+    .services-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+
+    .service-card {
+        padding: 12px 6px 14px;
+        border-radius: 16px;
+        box-shadow: none;
+        border: 1px solid #e7f1f2;
+    }
+
+    .icon-box {
+        width: 46px;
+        height: 46px;
+        margin-bottom: 8px;
+        border-radius: 50%;
+        background: #e3f6f4;
+    }
+
+    .icon-box img {
+        width: 22px;
+        height: 22px;
+    }
+
+    .service-card h4 {
+        font-size: 11.5px;
+        margin: 0;
+    }
+
+    /* توضیح خدمات روی موبایل مخفی می‌شه تا کارت‌ها فشرده و تمیز بمونن */
+    .service-card p {
+        display: none;
+    }
+
+    /* =====================================================
+       پزشکان: اسکرول افقی به‌جای گرید، بدون جاوااسکریپت
+       ===================================================== */
+    .doctor-grid {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 12px;
+        padding: 4px 10px 10px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .doctor-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .doctor-card {
+        flex: 0 0 132px;
+        scroll-snap-align: start;
+        padding: 14px 8px 16px;
+        border-radius: 18px;
+    }
+
+    .doctor-card img {
+        width: 66px;
+        height: 84px;
+        border-width: 3px;
+        margin-bottom: 8px;
+    }
+
+    .doctor-card h3 {
+        font-size: 12.5px;
+        margin: 0 0 3px;
+    }
+
+    .doctor-card > span {
+        font-size: 10.5px;
+        margin-bottom: 6px;
+    }
+
+    /* امتیاز ستاره‌ای روی موبایل مخفی می‌شه تا کارت مینیمال بمونه */
+    .stars,
+    .rating-number {
+        display: none;
+    }
+
+    .doctor-card a {
+        padding: 7px 14px;
+        font-size: 11px;
+    }
+
+    /* =====================================================
+       درباره‌ما: کارت تیره با عکس بالا، مثل طرح نمونه
+       ===================================================== */
+    .about-top {
+        grid-template-columns: 1fr;
+        margin: 0 10px 20px;
+        background: linear-gradient(160deg, #0d5c66, #0a4750);
+        border-radius: 20px;
+        overflow: hidden;
+        gap: 0;
+    }
+
+    .about-image {
+        margin: 0;
+        border-radius: 0;
+    }
+
+    .about-image img {
+        border-radius: 0;
+        height: 140px;
+        width: 100%;
+        object-fit: cover;
+        opacity: 0.9;
+    }
+
+    .about-text {
+        padding: 16px 18px 22px;
+    }
+
+    .about-text h3 {
+        color: #fff;
         font-size: 16px;
     }
 
-    .services-grid {
-        grid-template-columns: 1fr;
+    .about-text p {
+        color: #cfe6e6;
+        font-size: 12.5px;
+        line-height: 1.9;
     }
 
-    .doctor-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
+    .about-text .btn {
+        background: #14b8a6;
+        border: none;
+        color: #fff;
+        padding: 9px 18px;
+        font-size: 12.5px;
+        border-radius: 999px;
     }
 
+    /* کارت‌های ویژگی درباره‌ما: ۲ ستونه */
     .feature-cards {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
     }
 
     .clinic-info,
@@ -277,10 +535,12 @@ img {
         padding: 30px 18px;
     }
 
+    /* لینک‌های فوتر: به‌جای ستون عمودی، ۲ ستونه/افقی */
     .footer-links {
+        flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 12px 18px;
+        gap: 12px 22px;
     }
 
     #backToTop {
@@ -288,3 +548,5 @@ img {
         height: 42px;
         font-size: 18px;
     }
+}
+
