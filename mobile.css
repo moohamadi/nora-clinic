@@ -3,7 +3,12 @@
    این فایل فقط برای صفحات موبایل (حداکثر 768px) فعال می‌شود
    و باید بعد از style.css لینک شود.
 ===================================================== */
+ .menu-btn,
+ .side-menu,
+ .menu-overlay{
+ display:none;
 
+}
 @media (max-width: 768px) {
 
   :root {
@@ -38,6 +43,7 @@
 
   /* ترتیب نمایش: همبرگر - برند - تماس */
   .menu-btn {
+   display: block;
     order: 1;
     background: none;
     border: none;
@@ -106,6 +112,7 @@
      SIDE MENU (کشویی)
   ===================================================== */
   .side-menu {
+    display: block;
     position: fixed;
     top: 0;
     right: -280px;
@@ -674,16 +681,15 @@ padding: 6px 12px;
     z-index: 100;
   }
 
-  /* =====================================================
-     توجه: افکت fade-in که قبلاً اینجا بود حذف شد.
-     دلیل: در style.css اصلی هیچ قانونی برای کلاس ".fade.section"
-     وجود نداشت (فقط ".fade-section" با خط‌تیره تعریف شده بود که
-     به این المنت‌ها اصلاً اعمال نمی‌شد). قانون opacity:0 که اینجا
-     اضافه شده بود کاملاً به IntersectionObserver توی script.js
-     وابسته بود؛ اگر کلاس visible به‌موقع اضافه نمی‌شد، کل سکشن
-     (مثل هیرو) نامرئی می‌ماند. برای جلوگیری از این ریسک، این
-     افکت به‌طور کامل حذف شد و سکشن‌ها همیشه با opacity:1 نمایش
-     داده می‌شوند.
-  ===================================================== */
+ .fade.section {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade.section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
 }
