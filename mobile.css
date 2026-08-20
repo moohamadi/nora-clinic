@@ -1,0 +1,655 @@
+/* =====================================================
+   MOBILE.CSS — درمانگاه نورا
+   این فایل فقط برای صفحات موبایل (حداکثر 768px) فعال می‌شود
+   و باید بعد از style.css لینک شود.
+===================================================== */
+
+@media (max-width: 768px) {
+
+  :root {
+    --primary: #0f8a7e;
+    --primary-light: #e6f5f3;
+    --text-dark: #14332e;
+    --text-muted: #6b7a78;
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --shadow-soft: 0 4px 14px rgba(15, 138, 126, 0.08);
+  }
+
+  body {
+    overflow-x: hidden;
+    background: #f4f8f8;
+  }
+
+  /* =====================================================
+     TOPBAR / HEADER
+  ===================================================== */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  /* ترتیب نمایش: همبرگر - برند - تماس */
+  .menu-btn {
+    order: 1;
+    background: none;
+    border: none;
+    font-size: 26px;
+    color: var(--text-dark);
+    line-height: 1;
+  }
+
+  .brand {
+    order: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+  }
+
+  .brand-logo {
+    display: none; /* روی موبایل لوگوی + بزرگ لازم نیست، فضا می‌گیرد */
+  }
+
+  .brand-text h1 {
+    font-size: 17px;
+    color: var(--primary);
+    margin: 0;
+  }
+
+  .brand-text p {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin: 2px 0 0;
+  }
+
+  .contact-box {
+    order: 3;
+  }
+
+  .contact-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .contact-box strong,
+  .contact-box p {
+    display: none; /* روی موبایل فقط آیکون تماس نمایش داده شود */
+  }
+
+  .contact-box .phone-icon {
+    font-size: 18px;
+    color: var(--primary);
+  }
+
+  /* منوی افقی دسکتاپ روی موبایل مخفی است — از side-menu استفاده می‌شود */
+  .main-menu {
+    display: none;
+  }
+
+  /* =====================================================
+     SIDE MENU (کشویی)
+  ===================================================== */
+  .side-menu {
+    position: fixed;
+    top: 0;
+    right: -280px;
+    width: 260px;
+    height: 100%;
+    background: #fff;
+    z-index: 200;
+    padding: 20px;
+    transition: right 0.3s ease;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .side-menu.active {
+    right: 0;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 26px;
+    color: var(--text-dark);
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .side-menu-links {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .side-menu-links a {
+    padding: 12px 8px;
+    color: var(--text-dark);
+    text-decoration: none;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+  }
+
+  .side-menu-label {
+    padding: 12px 8px 4px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .menu-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 150;
+  }
+
+  .menu-overlay.active {
+    display: block;
+  }
+
+  /* =====================================================
+     HERO
+  ===================================================== */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    gap: 0;
+  }
+
+  .hero-image {
+    order: -1; /* تصویر بالا مثل طرح */
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-content {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    margin-top: -24px;
+    position: relative;
+    z-index: 5;
+    padding: 20px 18px;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: var(--primary-light);
+    color: var(--primary);
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+
+  .hero-content h2 {
+    font-size: 22px;
+    line-height: 1.5;
+    color: var(--text-dark);
+    margin: 0 0 10px;
+  }
+
+  .hero-content p {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.9;
+    margin: 0 0 16px;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .hero-buttons .btn {
+    flex: 1;
+    min-width: 30%;
+    text-align: center;
+    background: var(--primary);
+    color: #fff;
+    padding: 10px 6px;
+    border-radius: 30px;
+    font-size: 12.5px;
+    text-decoration: none;
+  }
+
+  .hero-icons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 18px;
+  }
+
+  .hero-icons div {
+    background: var(--primary-light);
+    border-radius: var(--radius-md);
+    padding: 10px 6px;
+    text-align: center;
+  }
+
+  .hero-icons strong {
+    display: block;
+    font-size: 11.5px;
+    color: var(--text-dark);
+  }
+
+  .hero-icons span {
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+
+  /* =====================================================
+     SERVICES
+  ===================================================== */
+  .services-shell {
+    padding: 28px 16px 8px;
+  }
+
+  .section-head {
+    text-align: center;
+    margin-bottom: 18px;
+  }
+
+  .section-head span {
+    color: var(--primary);
+    font-size: 12px;
+  }
+
+  .section-head h3 {
+    font-size: 19px;
+    margin: 4px 0 6px;
+    color: var(--text-dark);
+  }
+
+  .section-head p {
+    font-size: 12.5px;
+    color: var(--text-muted);
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .service-card {
+    background: #fff;
+    border-radius: var(--radius-md);
+    padding: 16px 6px;
+    text-align: center;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .service-card .icon-box {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 8px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .service-card .icon-box img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+  }
+
+  .service-card h4 {
+    font-size: 12px;
+    margin: 0 0 4px;
+    color: var(--text-dark);
+  }
+
+  .service-card p {
+    display: none; /* در طرح موبایل، توضیح خدمات مخفی است تا کارت کوچک بماند */
+  }
+
+  /* =====================================================
+     DOCTORS (اسکرول افقی)
+  ===================================================== */
+  .doctors {
+    padding: 28px 0 8px;
+  }
+
+  .doctors-title {
+    text-align: center;
+    padding: 0 16px;
+    margin-bottom: 16px;
+  }
+
+  .doctors-title span {
+    color: var(--primary);
+    font-size: 12px;
+  }
+
+  .doctors-title h2 {
+    font-size: 19px;
+    margin: 4px 0 6px;
+    color: var(--text-dark);
+  }
+
+  .doctors-title p {
+    font-size: 12.5px;
+    color: var(--text-muted);
+  }
+
+  .doctor-grid {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 4px 16px 12px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .doctor-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .doctor-card {
+    flex: 0 0 44%;
+    scroll-snap-align: start;
+    background: #fff;
+    border-radius: var(--radius-md);
+    padding: 10px;
+    text-align: center;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .doctor-card img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 8px;
+  }
+
+  .doctor-card h3 {
+    font-size: 12.5px;
+    margin: 0 0 2px;
+    color: var(--text-dark);
+  }
+
+  .doctor-card span {
+    display: block;
+    font-size: 10.5px;
+    color: var(--text-muted);
+  }
+
+  .doctor-card .stars {
+    color: #f5b301;
+    font-size: 11px;
+    margin-top: 4px;
+  }
+
+  .doctor-card .rating-number {
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+
+  .doctor-card a {
+    display: block;
+    margin-top: 8px;
+    background: var(--primary-light);
+    color: var(--primary);
+    font-size: 11px;
+    padding: 6px;
+    border-radius: 20px;
+    text-decoration: none;
+  }
+
+  /* =====================================================
+     ABOUT
+  ===================================================== */
+  .about {
+    padding: 28px 16px 8px;
+  }
+
+  .about-title {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .about-title span {
+    color: var(--primary);
+    font-size: 12px;
+  }
+
+  .about-title h2 {
+    font-size: 20px;
+    margin: 4px 0 6px;
+  }
+
+  .about-title p {
+    font-size: 12.5px;
+    color: var(--text-muted);
+  }
+
+  .about-top {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .about-image img {
+    width: 100%;
+    border-radius: var(--radius-lg);
+    display: block;
+  }
+
+  .about-text h3 {
+    font-size: 16px;
+    margin: 0 0 8px;
+  }
+
+  .about-text p {
+    font-size: 13px;
+    line-height: 1.9;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  .feature-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 18px 0;
+  }
+
+  .feature-card {
+    background: #fff;
+    border-radius: var(--radius-md);
+    padding: 14px 8px;
+    text-align: center;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .feature-card .icon {
+    font-size: 20px;
+    margin-bottom: 6px;
+  }
+
+  .feature-card h4 {
+    font-size: 12.5px;
+    margin: 0 0 4px;
+  }
+
+  .feature-card p {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .about-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .clinic-info,
+  .map-box {
+    background: #fff;
+    border-radius: var(--radius-md);
+    padding: 16px;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .clinic-info h3,
+  .map-box h3 {
+    font-size: 14px;
+    margin: 0 0 10px;
+  }
+
+  .clinic-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px;
+  }
+
+  .clinic-info li {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    padding: 6px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .socials {
+    display: flex;
+    gap: 8px;
+  }
+
+  .socials a {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 14px;
+  }
+
+  .map-box img {
+    width: 100%;
+    border-radius: 12px;
+    margin-top: 8px;
+  }
+
+  /* =====================================================
+     FOOTER
+  ===================================================== */
+  .footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 28px 16px;
+    background: var(--text-dark);
+    color: #fff;
+    gap: 10px;
+  }
+
+  .footer-logo img {
+    width: 40px;
+  }
+
+  .footer-center h2 {
+    font-size: 16px;
+    margin: 0 0 6px;
+  }
+
+  .footer-center p {
+    font-size: 12px;
+    color: #cfe4e1;
+    line-height: 1.8;
+  }
+
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .footer-links a {
+    font-size: 12px;
+    color: #fff;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 6px 12px;
+    border-radius: 20px;
+  }
+
+  .copyright {
+    text-align: center;
+    font-size: 11px;
+    color: #cfe4e1;
+    background: var(--text-dark);
+    padding: 0 16px 20px;
+  }
+
+  /* =====================================================
+     BACK TO TOP
+  ===================================================== */
+  #backToTop {
+    position: fixed;
+    bottom: 20px;
+    left: 16px; /* در RTL معمولاً گوشه چپ خالی‌تر است */
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    background: var(--primary);
+    color: #fff;
+    font-size: 18px;
+    box-shadow: var(--shadow-soft);
+    display: none;
+    z-index: 100;
+  }
+
+  /* =====================================================
+     FADE-IN ANIMATION (هماهنگ با IntersectionObserver در script.js)
+  ===================================================== */
+  .fade.section {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade.section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
