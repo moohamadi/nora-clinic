@@ -56,7 +56,7 @@
   }
 
   .brand-logo {
-    display: none; /* روی موبایل لوگوی + بزرگ لازم نیست، فضا می‌گیرد */
+    display: none; 
   }
 
   .brand-text h1 {
@@ -167,17 +167,26 @@
      HERO
   ===================================================== */
   .hero {
-    display: flex;
-    flex-direction: column;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    height: auto !important;
+    min-height: 0 !important;
     padding: 16px;
     gap: 0;
   }
 
   .hero-image {
-    order: -1; /* تصویر بالا مثل طرح */
+    order: -1 !important; /* تصویر بالا مثل طرح */
+    position: relative !important; /* اگر توی style.css absolute بود، خنثی می‌شود */
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    inset: auto !important;
+    width: 100% !important;
     border-radius: var(--radius-lg);
     overflow: hidden;
-    position: relative;
   }
 
   .hero-image img {
@@ -188,10 +197,22 @@
   }
 
   .hero-content {
+    position: rel
+
+ative !important; /* اگر توی style.css absolute بود، از حالت overlay خارج می‌شود */
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    inset: auto !important;
+    transform: none !important;
+    width: auto !important;
+    height: auto !important;
+    display: block !important;
+    order: 0 !important;
     background: #fff;
     border-radius: var(--radius-lg);
     margin-top: -24px;
-    position: relative;
     z-index: 5;
     padding: 20px 18px;
     box-shadow: var(--shadow-soft);
@@ -293,12 +314,20 @@
   }
 
   .services-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    grid-auto-rows: min-content !important; /* خنثی کردن هر rule استرچ روی ردیف‌ها */
+    align-items: start !important;
+    height: auto !important;
+    min-height: 0 !important;
     gap: 10px;
   }
 
   .service-card {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    display: block !important; /* اگر flex/stretch بود، به block ساده برمی‌گردد */
     background: #fff;
     border-radius: var(--radius-md);
     padding: 16px 6px;
@@ -331,7 +360,7 @@
   }
 
   .service-card p {
-    display: none; /* در طرح موبایل، توضیح خدمات مخفی است تا کارت کوچک بماند */
+    display: none;
   }
 
   /* =====================================================
@@ -368,7 +397,9 @@
     gap: 12px;
     overflow-x: auto;
     padding: 4px 16px 12px;
-    scroll-snap-type: x mandatory;
+    scroll-snap-type: x m
+
+andatory;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -607,7 +638,8 @@
     color: #fff;
     text-decoration: none;
     background: rgba(255, 255, 255, 0.08);
-    padding: 6px 12px;
+
+padding: 6px 12px;
     border-radius: 20px;
   }
 
@@ -625,7 +657,7 @@
   #backToTop {
     position: fixed;
     bottom: 20px;
-    left: 16px; /* در RTL معمولاً گوشه چپ خالی‌تر است */
+    left: 16px; 
     width: 42px;
     height: 42px;
     border-radius: 50%;
@@ -639,17 +671,15 @@
   }
 
   /* =====================================================
-     FADE-IN ANIMATION (هماهنگ با IntersectionObserver در script.js)
+     توجه: افکت fade-in که قبلاً اینجا بود حذف شد.
+     دلیل: در style.css اصلی هیچ قانونی برای کلاس ".fade.section"
+     وجود نداشت (فقط ".fade-section" با خط‌تیره تعریف شده بود که
+     به این المنت‌ها اصلاً اعمال نمی‌شد). قانون opacity:0 که اینجا
+     اضافه شده بود کاملاً به IntersectionObserver توی script.js
+     وابسته بود؛ اگر کلاس visible به‌موقع اضافه نمی‌شد، کل سکشن
+     (مثل هیرو) نامرئی می‌ماند. برای جلوگیری از این ریسک، این
+     افکت به‌طور کامل حذف شد و سکشن‌ها همیشه با opacity:1 نمایش
+     داده می‌شوند.
   ===================================================== */
-  .fade.section {
-    opacity: 0;
-    transform: translateY(16px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-
-  .fade.section.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
 
 }
