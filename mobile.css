@@ -663,6 +663,203 @@ padding: 6px 12px;
   }
 
   /* =====================================================
+     صفحه بیمه‌ها (insurance.html)
+  ===================================================== /
+  .insurance-header {
+    padding: 0 16px;
+    margin: 10px auto 12px;
+  }
+
+  .insurance-intro {
+    padding: 0 16px;
+  }
+
+  .insurance-intro h2 {
+    font-size: 24px;
+  }
+
+  .insurance-intro p {
+    font-size: 14px;
+    line-height: 1.9;
+  }
+
+  .insurance-grid {
+    padding: 0 16px;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px;
+  }
+
+  .insurance-card {
+    padding: 16px 10px;
+  }
+
+  .insurance-card img {
+    width: 56px;
+    height: 56px;
+  }
+
+  .insurance-card h3 {
+    font-size: 15px;
+  }
+
+  .insurance-help {
+    margin: 0 16px 30px;
+    padding: 16px;
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+    width: auto;
+  }
+
+  / =====================================================
+     صفحه داروخانه (pharmacy.html)
+  ===================================================== /
+  .pharmacy {
+    padding: 16px;
+  }
+
+  .top-section {
+    grid-template-columns: 1fr !important;
+    gap: 20px;
+  }
+
+  .section-title h1 {
+    font-size: 19px;
+    white-space: normal;
+  }
+
+  .service-cards {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px;
+  }
+
+  .service-cards .service-card .icon {
+    height: 44px;
+    font-size: 32px;
+  }
+
+  .service-cards .service-card h2 {
+    font-size: 15px;
+  }
+
+  .service-cards .service-card p {
+    font-size: 12.5px;
+  }
+
+  .working-hours {
+    min-height: 0;
+    padding: 16px;
+  }
+
+  .advantages {
+    grid-template-columns: repeat(2, 1fr) !important;
+    padding: 16px;
+    gap: 16px 10px;
+  }
+
+  .advantage {
+    border-left: none !important;
+    flex-direction: column;
+    text-align: center;
+    padding: 5px;
+  }
+
+  / =====================================================
+     صفحات ارزیابی پرسنل (doctotors-evalution.html /
+     nurse-evaluation.html / pharmacy-evaluation.html)
+  ===================================================== /
+  .doctor-rating-area {
+    width: auto;
+    margin: 16px;
+    display: block !important;
+  }
+
+  .doctor-selector {
+    width: 100%;
+    margin-bottom: 16px;
+    padding: 16px;
+  }
+
+  .doctor-info-card,
+  .doctor-evaluation-card {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .doctor-info-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 14px;
+  }
+
+  .doctor-meta {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 14px;
+  }
+
+  .evaluation-row {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .evaluation-name {
+    white-space: normal;
+    font-size: 13px;
+  }
+
+  .rating-stars button {
+    width: 24px;
+    height: 24px;
+    font-size: 20px;
+  }
+
+  .doctor-average-card {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .average-breakdown {
+    min-width: 0;
+  }
+
+  / =====================================================
+     گالری (gallery.html)
+  ===================================================== */
+  .gallery-page {
+    margin: 16px;
+    padding: 20px 14px;
+    border-radius: 20px;
+  }
+
+  .gallery-head h1 {
+    font-size: 24px;
+  }
+
+  .gallery-head p {
+    font-size: 14px;
+  }
+
+  .gallery-main {
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .gallery-main img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px;
+  }
+
+  .gallery-item {
+    height: 140px;
+  }
+  
+  /* =====================================================
      BACK TO TOP
   ===================================================== */
   #backToTop {
