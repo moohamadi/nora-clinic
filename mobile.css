@@ -82,14 +82,15 @@
   }
 
   .contact-box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 40px!important;
+    height: 40px!important;
+    flex: 0 0 40px !important; 
+    border-radius: 50% !important;
     background: var(--primary-light);
-    padding: 0;
+    padding: 0!important; 
     overflow: hidden;
   }
 
@@ -208,9 +209,7 @@
   }
 
   .hero-content {
-    position: rel
-
-ative !important; /* اگر توی style.css absolute بود، از حالت overlay خارج می‌شود */
+    position: relative !important; /* اگر توی style.css absolute بود، از حالت overlay خارج می‌شود */
     top: auto !important;
     left: auto !important;
     right: auto !important;
@@ -766,7 +765,7 @@ padding: 6px 12px;
   /* =====================================================
      صفحات ارزیابی پرسنل (doctotors-evalution.html /
      nurse-evaluation.html / pharmacy-evaluation.html)
-  ===================================================== */
+  ===================================================== /
   .doctor-rating-area {
     width: auto;
     margin: 16px;
