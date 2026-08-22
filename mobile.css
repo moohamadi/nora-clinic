@@ -3,12 +3,17 @@
    این فایل فقط برای صفحات موبایل (حداکثر 768px) فعال می‌شود
    و باید بعد از style.css لینک شود.
 ===================================================== */
- .menu-btn,
- .side-menu,
- .menu-overlay{
- display:none;
 
+/* =====================================================
+   پیش‌فرض: منوی همبرگری فقط مخصوص موبایل است.
+   روی دسکتاپ (بیرون از مدیا کوئری) باید مخفی باشد.
+===================================================== */
+.menu-btn,
+.side-menu,
+.menu-overlay {
+  display: none;
 }
+
 @media (max-width: 768px) {
 
   :root {
@@ -43,7 +48,7 @@
 
   /* ترتیب نمایش: همبرگر - برند - تماس */
   .menu-btn {
-   display: block;
+    display: block;
     order: 1;
     background: none;
     border: none;
@@ -62,7 +67,7 @@
   }
 
   .brand-logo {
-    display: none; 
+    display: none; /* روی موبایل لوگوی + بزرگ لازم نیست، فضا می‌گیرد */
   }
 
   .brand-text h1 {
@@ -82,15 +87,14 @@
   }
 
   .contact-box {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 40px!important;
-    height: 40px!important;
-    flex: 0 0 40px !important; 
-    border-radius: 50% !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
     background: var(--primary-light);
-    padding: 0!important; 
+    padding: 0;
     overflow: hidden;
   }
 
@@ -104,9 +108,14 @@
     color: var(--primary);
   }
 
-  /* منوی افقی دسکتاپ روی موبایل مخفی است — از side-menu استفاده می‌شود */
-  .main-menu {
+  /* منوی افقی دسکتاپ (.main-menu / .nav): وقتی همبرگر/کشو وجود دارد، مخفی می‌شود */
+  .topbar:has(.menu-btn) .main-menu,
+  .topbar:has(.menu-btn) .nav {
     display: none;
+  }
+
+  .topbar {
+    flex-wrap: wrap;
   }
 
   /* =====================================================
@@ -193,14 +202,16 @@
     bottom: auto !important;
     inset: auto !important;
     width: 100% !important;
-    border-radius: var(--radius-lg);
-    min-height: 0 !important;
+    min-height: 0 !important; /* خنثی کردن min-height:560px دسکتاپ که فضای خالی رنگی ایجاد می‌کرد */
     height: auto !important;
+    border-radius: var(--radius-lg);
     overflow: hidden;
   }
-.hero-image::after{
-    display: none !important;
-}
+
+  .hero-image::after {
+    display: none !important; /* گرادینت سفید مخصوص چیدمان دسکتاپ (که متن روی عکس می‌نشست) روی موبایل لازم نیست */
+  }
+
   .hero-image img {
     width: 100%;
     height: 260px;
@@ -363,14 +374,14 @@
     object-fit: contain;
   }
 
-  .service-card h4 {
+  .services-grid .service-card h4 {
     font-size: 12px;
     margin: 0 0 4px;
     color: var(--text-dark);
   }
 
-  .service-card p {
-    display: none;
+  .services-grid .service-card p {
+    display: none; /* فقط توی گرید خدمات صفحه اصلی مخفی شود؛ توضیح کارت‌های داروخانه دست نمی‌خورد */
   }
 
   /* =====================================================
@@ -407,9 +418,7 @@
     gap: 12px;
     overflow-x: auto;
     padding: 4px 16px 12px;
-    scroll-snap-type: x m
-
-andatory;
+    scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -648,8 +657,7 @@ andatory;
     color: #fff;
     text-decoration: none;
     background: rgba(255, 255, 255, 0.08);
-
-padding: 6px 12px;
+    padding: 6px 12px;
     border-radius: 20px;
   }
 
@@ -659,6 +667,26 @@ padding: 6px 12px;
     color: #cfe4e1;
     background: var(--text-dark);
     padding: 0 16px 20px;
+  }
+
+  /* =====================================================
+     BACK TO TOP
+  ===================================================== */
+  #backToTop,
+  #BackToTop {
+    position: fixed;
+    bottom: 20px;
+    left: 16px; /* در RTL معمولاً گوشه چپ خالی‌تر است */
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    background: var(--primary);
+    color: #fff;
+    font-size: 18px;
+    box-shadow: var(--shadow-soft);
+    display: none;
+    z-index: 100;
   }
 
   /* =====================================================
@@ -765,60 +793,34 @@ padding: 6px 12px;
   /* =====================================================
      صفحات ارزیابی پرسنل (doctotors-evalution.html /
      nurse-evaluation.html / pharmacy-evaluation.html)
-  ===================================================== /
-  .doctor-rating-area {
-    width: auto;
-    margin: 16px;
-    display: block !important;
-  }
-
-  .doctor-selector {
+     تصمیم: به‌جای تبدیل به تک‌ستونی، همون چیدمان دو ستونه‌ی
+     دسکتاپ نگه داشته می‌شود ولی هدر/بنر عکس/فوتر تمام‌عرض
+     (edge-to-edge) می‌شوند. این استایل‌ها فقط روی صفحاتی اجرا
+     می‌شوند که .doctor-rating-area دارند (:has) و هیچ صفحه‌ی
+     دیگری را تحت تأثیر قرار نمی‌دهند.
+  ===================================================== */
+  body:has(.doctor-rating-area) .topbar {
+    max-width: none;
     width: 100%;
-    margin-bottom: 16px;
-    padding: 16px;
+    border-radius: 0;
   }
 
-  .doctor-info-card,
-  .doctor-evaluation-card {
-    padding: 16px;
-    margin-bottom: 16px;
+  body:has(.doctor-rating-area) .insurance-header {
+    max-width: none;
+    width: 100%;
+    margin: 0 0 12px;
+    border-radius: 0;
+    padding: 0;
   }
 
-  .doctor-info-content {
-    flex-direction: column;
-    text-align: center;
-    gap: 14px;
+  body:has(.doctor-rating-area) .footer {
+    max-width: none;
+    width: 100%;
   }
 
-  .doctor-meta {
-    grid-template-columns: 1fr 1fr;
-    column-gap: 14px;
-  }
-
-  .evaluation-row {
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .evaluation-name {
-    white-space: normal;
-    font-size: 13px;
-  }
-
-  .rating-stars button {
-    width: 24px;
-    height: 24px;
-    font-size: 20px;
-  }
-
-  .doctor-average-card {
-    padding: 16px;
-    gap: 16px;
-  }
-
-  .average-breakdown {
-    min-width: 0;
-  }
+  /* .doctor-rating-area و اجزای داخلش عمداً دست‌نخورده می‌مانند
+     تا چیدمان دو ستونه‌ی دسکتاپ حفظ شود؛ خود کارت‌ها با اسکرول
+     افقی صفحه (در صورت نیاز) به‌جای تنگ‌شدن نمایش داده می‌شوند. */
 
   /* =====================================================
      گالری (gallery.html)
@@ -857,7 +859,8 @@ padding: 6px 12px;
   .gallery-item {
     height: 140px;
   }
-
+  
+}
   /* =====================================================
      BACK TO TOP
   ===================================================== */
@@ -888,4 +891,4 @@ padding: 6px 12px;
     transform: translateY(0);
   }
 
-}
+
