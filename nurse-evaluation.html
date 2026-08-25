@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1100">
+  <title>ارزیابی پرستاران درمانگاه نورا | خرم‌آباد</title>
+
+<meta name="description"
+      content="ارزیابی و امتیازدهی به پرستاران درمانگاه نورا بر اساس کیفیت خدمات، برخورد، دقت و نحوه رسیدگی به بیماران.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mobile.css">
+
+
+    <!-- فونت فارسی -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+</head>
+<body>
+
+    <!-- هدر ساده -->
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-text">
+                <h1>درمانگاه نورا</h1>
+                <p>سلامت شما، اولویت ماست</p>
+            </div>
+            <div class="brand-logo">+</div>
+        </div>
+
+        <nav class="nav">
+            <a href="index.html">خانه</a>
+            <a href="index.html#services">خدمات</a>
+            <a href="index.html#doctors">پزشکان</a>
+            <a href="index.html#about">درباره ما</a>
+            <a href="index.html#contact">تماس با ما</a>
+                
+     <div class="dropdown">
+        <a href="#" class="dropdown-toggle">⭐ ارزیابی پرسنل</a>
+        <div class="dropdown-menu">
+            <a href="doctotors-evalution.html">ارزیابی پزشکان</a>
+            <a href="nurse-evaluation.html">ارزیابی پرستاران</a>
+            <a href="pharmacy-evaluation.html">ارزیابی داروخانه</a>
+        </div>
+    </div>
+        </nav>
+
+        <button id="menuBtn" class="menu-btn" aria-label="باز کردن منو">☰</button>
+
+<div id="menuOverlay" class="menu-overlay"></div>
+
+<aside id="sideMenu" class="side-menu">
+    <button id="closeBtn" class="close-btn" aria-label="بستن منو">×</button>
+    <nav class="side-menu-links">
+        <a href="shifts.html">شیفت پرسنل</a>
+        <a href="pharmacy.html">داروخانه</a>
+        <a href="insurance.html">بیمه‌های طرف قرارداد</a>
+        <a href="gallery.html">گالری تصاویر</a>
+        <a href="skin.html">پوست و مو</a>
+        <div class="side-menu-label">⭐ ارزیابی پرسنل</div>
+        <a href="doctotors-evalution.html">ارزیابی پزشکان</a>
+        <a href="nurse-evaluation.html">ارزیابی پرستاران</a>
+        <a href="pharmacy-evaluation.html">ارزیابی داروخانه</a>
+    </nav>
+</aside>
+
+        <div class="contact-box">
+            <span class="phone-icon">☎️</span>
+            <div>
+                <strong>021-12345678</strong>
+                <p>همه روزه 8 صبح تا 8 شب</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- هدر تصویری صفحه ارزیابی -->
+    <section class="insurance-header">
+        <img src="images/nurse/header.png" alt="پرستاران درمانگاه نورا">
+    </section>
+
+<!-- =====================================
+     بخش انتخاب پرستار
+===================================== -->
+
+<section class="doctor-rating-area">
+
+    <!-- ستون انتخاب پرستار -->
+    <div class="doctor-selector">
+
+        <div class="selector-title">
+            <span class="selector-icon">♙</span>
+            <h2>انتخاب پرستار</h2>
+        </div>
+
+        <!-- جستجوی پرستار -->
+        <div class="doctor-search">
+            <span>⌕</span>
+            <input
+                type="text"
+                id="nurseSearch"
+                placeholder="جستجو بر اساس نام پرستار..."
+            >
+        </div>
+
+        <!-- لیست پرستاران: این کانتینر خالیه چون JS به‌صورت خودکار
+             از روی آرایه nurses توی nurses-evaluation.js پرش می‌کنه -->
+        <div class="doctor-list" id="nurseList">
+        </div>
+
+
+        <!-- مشاهده همه پرستاران -->
+        <button class="all-doctors-btn">
+            <span>♧</span>
+            مشاهده همه پرستاران
+        </button>
+
+    </div>
+
+<!-- =====================================
+     بخش اطلاعات و ارزیابی پرستار
+===================================== -->
+
+<div class="doctor-rating-content">
+
+
+    <!-- =================================
+         کارت اطلاعات پرستار
+    ================================== -->
+
+    <div class="doctor-info-card">
+
+        <!-- عنوان -->
+        <div class="doctor-card-title">
+            <h2>اطلاعات پرستار</h2>
+        </div>
+
+
+        <!-- محتوای اطلاعات -->
+        <div class="doctor-info-content">
+
+            <!-- عکس پرستار -->
+            <div class="doctor-photo">
+
+                <img
+                    id="selectedNurseImage"
+                    src=""
+                    alt=""
+                >
+
+            </div>
+
+
+            <!-- اطلاعات -->
+            <div class="doctor-details">
+
+                <h1 id="selectedNurseName">
+                    —
+                </h1>
+
+                <span
+                    class="doctor-specialty"
+                    id="selectedNurseSpecialty">
+                    —
+                </span>
+
+
+                <!-- اطلاعات تکمیلی -->
+
+                <div class="doctor-meta">
+
+
+                    <!-- سال فارغ التحصیلی -->
+                    <div class="doctor-meta-item">
+
+                        <span class="meta-icon">
+                            ▣
+                        </span>
+
+                        <div>
+                            <small>سال فارغ‌التحصیلی</small>
+
+                            <strong id="selectedNurseGraduation">
+                                —
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <!-- دانشگاه / موسسه آموزشی -->
+                    <div class="doctor-meta-item">
+
+                        <span class="meta-icon">
+                            🎓
+                        </span>
+
+                        <div>
+                            <small>فارغ‌التحصیل از</small>
+
+                            <strong id="selectedNurseUniversity">
+                                —
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <!-- سابقه فعالیت -->
+                    <div class="doctor-meta-item">
+
+                        <span class="meta-icon">
+                            ◷
+                        </span>
+
+                        <div>
+                            <small>سابقه فعالیت</small>
+
+                            <strong id="selectedNurseExperience">
+                                —
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <!-- شماره نظام پرستاری -->
+                    <div class="doctor-meta-item">
+
+                        <span class="meta-icon">
+                            ▣
+                        </span>
+
+                        <div>
+                            <small>شماره نظام پرستاری</small>
+
+                            <strong id="selectedNurseLicenseCode">
+                                —
+                            </strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================
+         کارت میانگین امتیازات
+    ================================== -->
+
+    <div class="doctor-average-card">
+
+        <div class="average-score-circle">
+            <svg viewBox="0 0 120 120" class="average-circle-svg">
+                <circle class="circle-bg" cx="60" cy="60" r="52"></circle>
+                <circle class="circle-progress" id="averageCircleProgress" cx="60" cy="60" r="52"></circle>
+            </svg>
+            <div class="average-circle-text">
+                <strong id="averageScoreNumber">۰</strong>
+                <span>از ۵</span>
+            </div>
+        </div>
+
+        <div class="average-score-details">
+            <h3>میانگین امتیازات کلی</h3>
+            <div class="average-stars" id="averageStarsDisplay"></div>
+            <p id="averageReviewCount">هنوز نظری ثبت نشده</p>
+        </div>
+
+        <div class="average-breakdown" id="averageBreakdown">
+            <!-- نوارهای ۱ تا ۵ ستاره با JS ساخته می‌شن -->
+        </div>
+
+    </div>
+
+
+    <!-- =================================
+         کارت امتیازدهی
+    ================================== -->
+
+    <div class="doctor-evaluation-card">
+
+
+        <!-- عنوان -->
+
+        <div class="evaluation-title">
+
+            <h2>
+                امتیازدهی به پرستار
+            </h2>
+
+        </div>
+
+
+        <!-- معیارهای ارزیابی -->
+
+        <div class="evaluation-list">
+
+
+            <!-- مراقبت و رسیدگی به بیمار -->
+
+            <div class="evaluation-row">
+
+                <div class="evaluation-name">
+
+                    <span class="evaluation-icon">
+                        ♥️
+                    </span>
+
+                    <span>
+                        مراقبت و رسیدگی به بیمار
+                    </span>
+
+                </div>
+
+
+                <div class="rating-stars" data-category="care">
+
+                 <div class="star-group">
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                 </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- مهارت در اقدامات درمانی -->
+
+            <div class="evaluation-row">
+
+                <div class="evaluation-name">
+
+             <span class="evaluation-icon">
+                        ⚕️
+                    </span>
+
+                    <span>
+                        مهارت در اقدامات درمانی
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="rating-stars"
+                    data-category="skill">
+
+                 <div class="star-group">
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                 </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- برخورد مهربانانه و صبورانه -->
+
+            <div class="evaluation-row">
+
+                <div class="evaluation-name">
+
+                    <span class="evaluation-icon">
+                        ☺️
+                    </span>
+
+                    <span>
+                        برخورد مهربانانه و صبورانه
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="rating-stars"
+                    data-category="behavior">
+
+                 <div class="star-group">
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                 </div>
+                </div>
+
+            </div>
+
+
+
+            <!-- سرعت عمل و پاسخگویی -->
+
+            <div class="evaluation-row">
+
+                <div class="evaluation-name">
+
+                    <span class="evaluation-icon">
+                        ◷
+                    </span>
+
+                    <span>
+                        سرعت عمل و پاسخگویی
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="rating-stars"
+                    data-category="responsiveness">
+
+                 <div class="star-group">
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                 </div>
+                </div>
+
+            </div>
+
+
+
+            <!-- رعایت بهداشت و ایمنی -->
+
+            <div class="evaluation-row">
+
+                <div class="evaluation-name">
+
+                    <span class="evaluation-icon">
+                        ✦
+                    </span>
+
+                    <span>
+                        رعایت بهداشت و ایمنی
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="rating-stars"
+                    data-category="hygiene">
+
+                 <div class="star-group">
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                 </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- پیام محرمانگی -->
+
+        <div class="evaluation-notice">
+
+            <span class="notice-icon">
+                ♢
+            </span>
+
+            <p>
+                اطلاعات شما محرمانه باقی می‌ماند و فقط برای
+                بهبود کیفیت خدمات استفاده می‌شود.
+            </p>
+
+        </div>
+
+
+
+        <!-- دکمه ثبت -->
+
+        <button
+            type="button"
+            class="submit-evaluation">
+
+            <span>
+                ثبت ارزیابی
+            </span>
+
+            <span class="submit-icon">
+                ➤
+            </span>
+
+        </button>
+
+    </div>
+
+</div>
+</section>
+
+
+    <div class="copyright">
+        ©️ تمامی حقوق این وبسایت متعلق به درمانگاه نورا می‌باشد.
+    </div>
+
+
+ <script src="script.js"></script>
+ <script src="nurse-evaluation.js"></script>
+
+
+</body>
+</html>

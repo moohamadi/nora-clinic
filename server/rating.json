@@ -1,0 +1,58 @@
+{
+  "doctors": {
+    "1": {
+      "3f7b7b77-1f6e-4f55-931f-bbccece5338e": {
+        "skill": 2,
+        "behavior": 5,
+        "time": 5,
+        "communication": 5,
+        "facility": 5
+      }
+    },
+    "2": [
+      {
+        "skill": 5,
+        "behavior": 5,
+        "time": 5,
+        "communication": 5,
+        "facility": 5
+      },
+      {
+        "skill": 5,
+        "behavior": 5,
+        "time": 5,
+        "communication": 5,
+        "facility": 5
+      },
+      {
+        "skill": 4,
+        "behavior": 4,
+        "time": 4,
+        "communication": 4,
+        "facility": 4
+      }
+    ]
+  },
+  "nurses": {
+    "4": {
+      "3f7b7b77-1f6e-4f55-931f-bbccece5338e": {
+        "care": 5,
+        "skill": 5,
+        "behavior": 5,
+        "responsiveness": 5,
+        "hygiene": 5
+      }
+    }
+  },
+  "pharmacy": {
+    "1": {
+      "3f7b7b77-1f6e-4f55-931f-bbccece5338e": {
+        "accuracy": 5,
+        "guidance": 5,
+        "fairPricing": 5,
+        "behavior": 5,
+        "hygiene": 5
+      }
+    }
+  }
+}

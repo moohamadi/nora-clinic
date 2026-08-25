@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>درمانگاه نورا</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mobile.css">
+
+
+    <!-- فونت فارسی -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+</head>
+
+<body>
+
+    <header class="site-header">
+
+        <div class="header-container">
+
+            <!-- لوگو -->
+            <a href="#index.html" class="brand">
+
+                <div class="brand-logo">N</div>
+
+                <div class="brand-text">
+                    <strong>درمانگاه نورا</strong>
+                </div>
+
+            </a>
+
+
+            <!-- منوی اصلی -->
+            <nav class="main-nav">
+
+                <a href="index.html" class="nav-link active">
+                    خانه
+                </a>
+
+                <a href="insurance.html" class="nav-link">
+                   بیمه ها
+                </a>
+
+                <a href="gallery.html" class="nav-link">
+                   گالری
+                </a>
+
+                <a href="pharmacy.html" class="nav-link">
+                   داروخانه
+                </a>
+
+                <a href="#" class="nav-link">
+                   شیفت پرسنل
+                </a>
+
+                 <div class="dropdown">
+          <a href="#" class="dropdown-toggle"> ارزیابی پرسنل</a>
+         <div class="dropdown-menu">
+            <a href="doctotors-evalution.html">ارزیابی پزشکان</a>
+            <a href="nurse-evaluation.html">ارزیابی پرستاران</a>
+            <a href="pharmacy-evaluation.html">ارزیابی داروخانه</a>
+         </div>
+            </nav>
+
+
+            <!-- بخش سمت چپ هدر -->
+            <div class="header-actions">
+
+                <button class="notification-btn" aria-label="اعلان‌ها">
+                    🔔
+                    <span class="notification-badge">3</span>
+                </button>
+
+                <div class="user-info">
+                    <div class="user-avatar">م</div>
+
+                    <div>
+                        <strong>مدیر سیستم</strong>
+                        <span>مدیر</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+  
+  <main>
+
+    <!-- بخش بالای صفحه شیفت -->
+    <section class="shift-header">
+
+        <div class="shift-title">
+            <span>برنامه کاری</span>
+            <h1>شیفت پزشکان</h1>
+            <p>برنامه شیفت پزشکان درمانگاه نورا</p>
+        </div>
+
+        <!-- انتخاب ماه -->
+        <div class="month-selector">
+
+            <button type="button" class="month-arrow">
+                ‹
+            </button>
+
+            <div class="current-month">
+               شهریور ۱۴۰۵
+            </div>
+
+            <button type="button" class="month-arrow">
+                ›
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- ================= ورود مدیر برای ویرایش شیفت‌ها ================= -->
+   
+<!-- باکس ورود مدیر -->
+<div id="shift-admin-login">
+    <div>
+        <p>ورود مدیر برای ویرایش شیفت‌ها:</p>
+        <div class="input-row">
+            <input type="password" id="shift-admin-password" placeholder="رمز عبور را وارد کنید">
+            <button id="shift-admin-login-btn">ورود</button>
+        </div>
+        <span id="shift-admin-error"></span>
+    </div>
+</div>
+
+<!-- باکس وضعیت مدیر (سبز) -->
+<div id="shift-admin-logged-in">
+    <div>
+        <span>✓ حالت مدیر فعال است — برای ویرایش، روی هر خانه از جدول کلیک کنید</span>
+        <button id="shift-admin-logout-btn">خروج</button>
+    </div>
+</div>
+
+      <!-- انتخاب گروه -->
+ <section class="staff-selector">
+
+    <button type="button"
+            id="doctor-btn"
+            class="staff-option active">
+        <span class="staff-icon">♙</span>
+        <span>پزشکان</span>
+    </button>
+
+    <button type="button"
+            id="nurse-btn"
+            class="staff-option">
+        <span class="staff-icon">♙</span>
+        <span>پرستاران</span>
+    </button>
+
+</section>
+
+    <!-- راهنمای شیفت‌ها -->
+    <section class="shift-legend">
+
+        <div class="legend-item">
+            <span class="legend-dot morning"></span>
+            <strong>M</strong>
+            <span>صبح</span>
+        </div>
+
+        <div class="legend-item">
+            <span class="legend-dot evening"></span>
+            <strong>E</strong>
+            <span>عصر</span>
+        </div>
+
+        <div class="legend-item">
+            <span class="legend-dot night"></span>
+            <strong>N</strong>
+            <span>شب</span>
+        </div>
+
+        <div class="legend-item">
+            <span class="legend-dot peak"></span>
+            <strong>X</strong>
+            <span>پیک شب</span>
+        </div>
+
+        <div class="legend-item">
+            <span class="legend-dot empty"></span>
+            <strong>—</strong>
+            <span>بدون شیفت</span>
+        </div>
+
+    </section>
+
+    <!-- جدول شیفت پزشکان -->
+<section class="shift-table-section">
+
+    <div id="docter-shift-table" class="shift-table-wrapper">
+
+        <table class="shift-table doctertable">
+
+            <thead>
+                <tr>
+                    <th class="doctor-name-head">پزشک</th>
+
+                    <th>۱</th>
+                    <th>۲</th>
+                    <th>۳</th>
+                    <th>۴</th>
+                    <th>۵</th>
+                    <th>۶</th>
+                    <th>۷</th>
+                    <th>۸</th>
+                    <th>۹</th>
+                    <th>۱۰</th>
+                    <th>۱۱</th>
+                    <th>۱۲</th>
+                    <th>۱۳</th>
+                    <th>۱۴</th>
+                    <th>۱۵</th>
+                    <th>۱۶</th>
+                    <th>۱۷</th>
+                    <th>۱۸</th>
+                    <th>۱۹</th>
+                    <th>۲۰</th>
+                    <th>۲۱</th>
+                    <th>۲۲</th>
+                    <th>۲۳</th>
+                    <th>۲۴</th>
+                    <th>۲۵</th>
+                    <th>۲۶</th>
+                    <th>۲۷</th>
+                    <th>۲۸</th>
+                    <th>۲۹</th>
+                    <th>۳۰</th>
+                    <th>۳۱</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td class="doctor-name">سعید فقهی </td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                   <td class="doctor-name">داوود مرادی </td>
+
+                    <!-- ۳۱ خانه خالی -->
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td class="doctor-name">تندیس خسروی </td>
+
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td class="doctor-name">علی ساروقی </td>
+
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td>
+                </tr>
+
+                  <tr>
+                   <td class="doctor-name">نوشین غلامی </td>
+                    
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                 <td class="doctor-name">فاطمه موسوی</td>
+                    
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                 <td class="doctor-name">احمد سوری</td>
+                    
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                  <td class="doctor-name">زهرا محمدپور </td>
+                    
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                   <td class="doctor-name">امیرحسین شاکرمی </td>
+                    
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                  <td class="doctor-name">راضیه قاسمی پور </td>
+                    
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!-- ======================================
+     جدول شیفت پرستاران
+====================================== -->
+
+<section class="shift-table-section nurses-section hidden">
+
+    <div id="nurse-shift-table" class="shift-table-wrapper">
+
+        <table class="shift-table nurses-table">
+
+            <thead>
+                <tr>
+
+                    <!-- ستون نام پرستار -->
+                    <th class="name-column">
+                       پرستاران
+                    </th>
+
+                    <!-- روزهای ماه -->
+                    <th>۱</th>
+                    <th>۲</th>
+                    <th>۳</th>
+                    <th>۴</th>
+                    <th>۵</th>
+                    <th>۶</th>
+                    <th>۷</th>
+                    <th>۸</th>
+                    <th>۹</th>
+                    <th>۱۰</th>
+                    <th>۱۱</th>
+                    <th>۱۲</th>
+                    <th>۱۳</th>
+                    <th>۱۴</th>
+                    <th>۱۵</th>
+                    <th>۱۶</th>
+                    <th>۱۷</th>
+                    <th>۱۸</th>
+                    <th>۱۹</th>
+                    <th>۲۰</th>
+                    <th>۲۱</th>
+                    <th>۲۲</th>
+                    <th>۲۳</th>
+                    <th>۲۴</th>
+                    <th>۲۵</th>
+                    <th>۲۶</th>
+                    <th>۲۷</th>
+                    <th>۲۸</th>
+                    <th>۲۹</th>
+                    <th>۳۰</th>
+                    <th>۳۱</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+
+
+                <!-- پرستار ۱ -->
+                <tr>
+                   
+                    <td class="person-name">سیما ندری</td>
+
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td>
+                </tr>
+
+                <!-- پرستار ۲ -->
+                <tr>
+                  <td class="person-name">مهسا کرمی</td>
+
+                    
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td>
+                </tr>
+
+                <!-- پرستار ۳ -->
+                <tr>
+                   
+                    <td class="person-name">راضیه عالی‌نژاد</td>
+
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td>
+                </tr>
+
+                <!-- پرستار ۴ -->
+                <tr>
+                  
+                    <td class="person-name">محدثه سهیلی</td>
+
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td>
+                </tr>
+
+                <!-- پرستار ۵ -->
+                <tr>
+                   
+                    <td class="person-name">مائده معززی</td>
+
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td>
+                </tr>
+
+                <!-- پرستار ۶ -->
+                <tr>
+                
+                    <td class="person-name">فاطمه مرادی</td>
+
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td>
+                </tr>
+
+                <!-- پرستار ۷ -->
+                <tr>
+                
+                    <td class="person-name">نسترن بیرانوند</td>
+
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td>
+                </tr>
+
+                <!-- پرستار ۸ -->
+                <tr>
+                    
+                    <td class="person-name">هانیه بازوند</td>
+
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td>
+                </tr>
+
+                <!-- پرستار ۹ -->
+                <tr>
+                    
+                    <td class="person-name">محمد عصمتی</td>
+
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td>
+                </tr>
+
+                <!-- پرستار ۱۰ -->
+                <tr>
+                    <td class="person-name">عرفان احمدی</td>
+
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td>
+                </tr>
+
+                <!-- پرستار ۱۱ -->
+                <tr>
+                    <td class="person-name">حمید ندری</td>
+
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td>
+                </tr>
+
+                <!-- پرستار ۱۲ -->
+                <tr>
+                    <td class="person-name">امیر مقدم</td>
+
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td>
+                </tr>
+
+                <!-- پرستار ۱۳ -->
+                <tr>
+                    <td class="person-name">کاظمیان</td>
+
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td>
+                </tr>
+
+                <!-- پرستار ۱۴ -->
+                <tr>
+                    <td class="person-name">مومنی</td>
+
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+</main>
+  
+
+    
+    <div class="copyright">
+        © تمامی حقوق این وبسایت متعلق به درمانگاه نورا می‌باشد.
+    </div>
+
+
+ <script src="script.js"></script>
+ <script src="shifts.js"></script>
+</body>
+</html>

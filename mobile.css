@@ -1,0 +1,1171 @@
+/* =====================================================
+   MOBILE.CSS — درمانگاه نورا
+   این فایل فقط برای صفحات موبایل (حداکثر 768px) فعال می‌شود
+   و باید بعد از style.css لینک شود.
+
+   نسخه‌ی جدید نسبت به mobile-6.css:
+   - چیدمان «هیرو» و «درباره ما» به‌صورت افقی (عکس + متن کنار هم)
+     مطابق طرح مرجع بازسازی شد.
+   - عنوان بخش‌ها (خدمات ما / معرفی پزشکان / درباره ما) به‌جای
+     وسط‌چین، راست‌چین با یک خط تأکید فیروزه‌ای شدند.
+   - یک لایه‌ی انیمیشن کامل (ورود هنگام لود، ظاهرشدن هنگام اسکرول،
+     فیدبک لمسی روی کارت‌ها و دکمه‌ها) اضافه شد؛ همه‌ی این افکت‌ها
+     با CSS خالص کار می‌کنند و به هیچ کلاسی که جاوااسکریپت باید
+     اضافه کند وابسته نیستند (به همون دلیلی که قبلاً باعث حذف
+     افکت fade-section شده بود) — پس هیچ محتوایی به‌خاطر اجرا
+     نشدن یک اسکریپت نامرئی نمی‌ماند.
+   - منطق منوی همبرگری (باز/بسته‌شدن کشو، اورلی) دست‌نخورده باقی
+     مانده و فقط انیمیشن روی آن اضافه شده.
+===================================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* =====================================================
+   پیش‌فرض: منوی همبرگری فقط مخصوص موبایل است.
+   روی دسکتاپ (بیرون از مدیا کوئری) باید مخفی باشد.
+===================================================== */
+
+/* =====================================================
+   چسباندن فوتر به ته صفحه (فقط ۳ صفحه ارزیابی پرسنل)
+   وقتی محتوا از ارتفاع صفحه کوتاه‌تر است، فوتر با margin-top:auto
+   به پایین‌ترین نقطه‌ی صفحه رانده می‌شود؛ اگر محتوا بلندتر باشد،
+   طبق روال عادی زیر محتوا قرار می‌گیرد و مشکلی ایجاد نمی‌کند.
+===================================================== */
+body:has(.doctor-rating-area) {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+body:has(.doctor-rating-area) .footer {
+  margin-top: auto;
+}
+
+.menu-btn,
+.side-menu,
+.menu-overlay {
+  display: none;
+}
+
+@media (max-width: 768px) {
+
+  :root {
+    --primary: #0f8a7e;
+    --primary-light: #e6f5f3;
+    --text-dark: #14332e;
+    --text-muted: #6b7a78;
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --shadow-soft: 0 4px 14px rgba(15, 138, 126, 0.08);
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  body {
+    overflow-x: hidden;
+    background: #f4f8f8;
+  }
+
+  /* =====================================================
+     TOPBAR / HEADER
+     ⚠️ منوی همبرگری اینجاست — این بخش عمداً دست‌نخورده ماند،
+     فقط یک انیمیشن ورودِ ساده (fadeInDown) به‌عنوان افکت اضافه
+     شد که هیچ ویژگی لایوت/نمایش را تغییر نمی‌دهد.
+  ===================================================== */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  /* ترتیب نمایش: همبرگر - برند - تماس */
+  .menu-btn {
+    display: block;
+    order: 1;
+    background: none;
+    border: none;
+    font-size: 26px;
+    color: var(--text-dark);
+    line-height: 1;
+  }
+
+  .brand {
+    order: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+  }
+
+  .brand-logo {
+    display: none; /* روی موبایل لوگوی + بزرگ لازم نیست، فضا می‌گیرد */
+  }
+
+  .brand-text h1 {
+    font-size: 17px;
+    color: var(--primary);
+    margin: 0;
+  }
+
+  .brand-text p {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin: 2px 0 0;
+  }
+
+  .contact-box {
+    order: 3;
+  }
+
+  .contact-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .contact-box strong,
+  .contact-box p {
+    display: none; /* روی موبایل فقط آیکون تماس نمایش داده شود */
+  }
+
+  .contact-box .phone-icon {
+    font-size: 18px;
+    color: var(--primary);
+  }
+
+  /* منوی افقی دسکتاپ (.main-menu / .nav): وقتی همبرگر/کشو وجود دارد، مخفی می‌شود */
+  .topbar:has(.menu-btn) .main-menu,
+  .topbar:has(.menu-btn) .nav {
+    display: none;
+  }
+
+  .topbar {
+    flex-wrap: wrap;
+  }
+
+  /* =====================================================
+     SIDE MENU (کشویی) — منطق باز/بسته شدن (right / .active)
+     دست‌نخورده مانده؛ فقط easing نرم‌تر و ورود پلکانی لینک‌ها
+     در پایین فایل (بخش ANIMATIONS) اضافه شده است.
+  ===================================================== */
+  .side-menu {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: -280px;
+    width: 260px;
+    height: 100%;
+    background: #fff;
+    z-index: 200;
+    padding: 20px;
+    transition: right 0.3s ease;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .side-menu.active {
+    right: 0;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 26px;
+    color: var(--text-dark);
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .side-menu-links {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .side-menu-links a {
+    padding: 12px 8px;
+    color: var(--text-dark);
+    text-decoration: none;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+  }
+
+  .side-menu-label {
+    padding: 12px 8px 4px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .menu-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 150;
+  }
+
+  .menu-overlay.active {
+    display: block;
+  }
+
+  /* =====================================================
+     HERO
+  ===================================================== */
+  .hero {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 16px;
+    gap: 0;
+  }
+
+  .hero-image {
+    order: -1 !important; /* تصویر بالا مثل طرح */
+    position: relative !important; /* اگر توی style.css absolute بود، خنثی می‌شود */
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    inset: auto !important;
+    width: 100% !important;
+    min-height: 0 !important; /* خنثی کردن min-height:560px دسکتاپ که فضای خالی رنگی ایجاد می‌کرد */
+    height: auto !important;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .hero-image::after {
+    display: none !important; /* گرادینت سفید مخصوص چیدمان دسکتاپ (که متن روی عکس می‌نشست) روی موبایل لازم نیست */
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-content {
+    position: relative !important; /* اگر توی style.css absolute بود، از حالت overlay خارج می‌شود */
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    inset: auto !important;
+    transform: none !important;
+    width: auto !important;
+    height: auto !important;
+    display: block !important;
+    order: 0 !important;
+    background: #fff;
+    border-radius: var(--radius-lg);
+    margin-top: -24px;
+    z-index: 5;
+    padding: 20px 18px;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: var(--primary-light);
+    color: var(--primary);
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+
+  .hero-content h2 {
+    font-size: 22px;
+    line-height: 1.5;
+    color: var(--text-dark);
+    margin: 0 0 10px;
+  }
+
+  .hero-content p {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.9;
+    margin: 0 0 16px;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .hero-buttons .btn {
+    flex: 1;
+    min-width: 30%;
+    text-align: center;
+    background: var(--primary);
+    color: #fff;
+    padding: 10px 6px;
+    border-radius: 30px;
+    font-size: 12.5px;
+    text-decoration: none;
+  }
+
+  .hero-icons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 18px;
+  }
+
+  .hero-icons div {
+    background: var(--primary-light);
+    border-radius: var(--radius-md);
+    padding: 10px 6px;
+    text-align: center;
+  }
+
+  .hero-icons strong {
+    display: block;
+    font-size: 11.5px;
+    color: var(--text-dark);
+  }
+
+  .hero-icons span {
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+
+  /* =====================================================
+     عنوان بخش‌ها (خدمات ما / معرفی پزشکان / درباره ما)
+     در طرح مرجع راست‌چین با یک خط تأکید فیروزه‌ای‌اند،
+     نه وسط‌چین.
+  ===================================================== */
+  .section-head,
+  .doctors-title,
+  .about-title {
+    text-align: right;
+    margin-bottom: 18px;
+  }
+
+  .section-head span,
+  .doctors-title span,
+  .about-title span {
+    color: var(--primary);
+    font-size: 12px;
+  }
+
+  .section-head h3,
+  .doctors-title h2,
+  .about-title h2 {
+    position: relative;
+    display: inline-block;
+    font-size: 19px;
+    margin: 4px 0 10px;
+    padding-bottom: 8px;
+    color: var(--text-dark);
+  }
+
+  .section-head h3::after,
+  .doctors-title h2::after,
+  .about-title h2::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 36px;
+    height: 3px;
+    border-radius: 3px;
+    background: var(--primary);
+  }
+
+  .section-head p,
+  .doctors-title p,
+  .about-title p {
+    font-size: 12.5px;
+    color: var(--text-muted);
+  }
+
+  /* =====================================================
+     SERVICES
+  ===================================================== */
+  .services-shell {
+    padding: 28px 16px 8px;
+  }
+
+  .services-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    grid-auto-rows: min-content !important; /* خنثی کردن هر rule استرچ روی ردیف‌ها */
+    align-items: start !important;
+    height: auto !important;
+    min-height: 0 !important;
+    gap: 10px;
+  }
+
+  .service-card {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    display: block !important; /* اگر flex/stretch بود، به block ساده برمی‌گردد */
+    background: #fff;
+    border-radius: var(--radius-md);
+    padding: 16px 6px;
+    text-align: center;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .service-card .icon-box {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 8px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .service-card .icon-box img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+  }
+
+  .services-grid .service-card h4 {
+    font-size: 12px;
+    margin: 0 0 4px;
+    color: var(--text-dark);
+  }
+
+  .services-grid .service-card p {
+    display: none; /* فقط توی گرید خدمات صفحه اصلی مخفی شود؛ توضیح کارت‌های داروخانه دست نمی‌خورد */
+  }
+
+  /* =====================================================
+     DOCTORS (اسکرول افقی)
+  ===================================================== */
+  .doctors {
+    padding: 28px 0 8px;
+  }
+
+  .doctors-title {
+    padding: 0 16px;
+  }
+
+  .doctor-grid {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 4px 16px 12px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .doctor-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .doctor-card {
+    flex: 0 0 44%;
+    scroll-snap-align: start;
+    background: #fff;
+    border-radius: var(--radius-md);
+    padding: 10px;
+    text-align: center;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .doctor-card img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 8px;
+  }
+
+  .doctor-card h3 {
+    font-size: 12.5px;
+    margin: 0 0 2px;
+    color: var(--text-dark);
+  }
+
+  .doctor-card span {
+    display: block;
+    font-size: 10.5px;
+    color: var(--text-muted);
+  }
+
+  .doctor-card .stars {
+    color: #f5b301;
+    font-size: 11px;
+    margin-top: 4px;
+  }
+
+  .doctor-card .rating-number {
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+
+  .doctor-card a {
+    display: block;
+    margin-top: 8px;
+    background: var(--primary-light);
+    color: var(--primary);
+    font-size: 11px;
+    padding: 6px;
+    border-radius: 20px;
+    text-decoration: none;
+  }
+
+  /* =====================================================
+     ABOUT — بازسازی‌شده: عکس + متن کنار هم (مطابق طرح مرجع)
+     به‌جای چیدمان ستونی نسخه‌ی قبلی.
+  ===================================================== */
+  .about {
+    padding: 28px 16px 8px;
+  }
+
+  .about-top {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .about-image {
+    order: 2;
+    flex: 0 0 40%;
+  }
+
+  .about-image img {
+    width: 100%;
+    height: 100%;
+    min-height: 160px;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    display: block;
+  }
+
+  .about-text {
+    order: 1;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .about-text h3 {
+    font-size: 15px;
+    margin: 0 0 8px;
+  }
+
+  .about-text p {
+    font-size: 12px;
+    line-height: 1.85;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    overflow-wrap: break-word;
+  }
+
+  .feature-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 18px 0;
+  }
+
+  .feature-card {
+    background: #fff;
+    border-radius: var(--radius-md);
+    padding: 14px 8px;
+    text-align: center;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .feature-card .icon {
+    font-size: 20px;
+    margin-bottom: 6px;
+  }
+
+  .feature-card h4 {
+    font-size: 12.5px;
+    margin: 0 0 4px;
+  }
+
+  .feature-card p {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .about-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .clinic-info,
+  .map-box {
+    background: #fff;
+    border-radius: var(--radius-md);
+    padding: 16px;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .clinic-info h3,
+  .map-box h3 {
+    font-size: 14px;
+    margin: 0 0 10px;
+  }
+
+  .clinic-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px;
+  }
+
+  .clinic-info li {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    padding: 6px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .socials {
+    display: flex;
+    gap: 8px;
+  }
+
+  .socials a {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 14px;
+  }
+
+  .map-box img {
+    width: 100%;
+    border-radius: 12px;
+    margin-top: 8px;
+  }
+
+  /* =====================================================
+     FOOTER
+  ===================================================== */
+  .footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 28px 16px;
+    background: var(--text-dark);
+    color: #fff;
+    gap: 10px;
+  }
+
+  .footer-logo img {
+    width: 40px;
+  }
+
+  .footer-center h2 {
+    font-size: 16px;
+    margin: 0 0 6px;
+  }
+
+  .footer-center p {
+    font-size: 12px;
+    color: #cfe4e1;
+    line-height: 1.8;
+  }
+
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .footer-links a {
+    font-size: 12px;
+    color: #fff;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 6px 12px;
+    border-radius: 20px;
+  }
+
+  .copyright {
+    text-align: center;
+    font-size: 11px;
+    color: #cfe4e1;
+    background: var(--text-dark);
+    padding: 0 16px 20px;
+  }
+
+  /* =====================================================
+     BACK TO TOP
+  ===================================================== */
+  #backToTop,
+  #BackToTop {
+    position: fixed;
+    bottom: 20px;
+    left: 16px; /* در RTL معمولاً گوشه چپ خالی‌تر است */
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    background: var(--primary);
+    color: #fff;
+    font-size: 18px;
+    box-shadow: var(--shadow-soft);
+    display: none;
+    z-index: 100;
+  }
+
+  /* =====================================================
+     صفحه بیمه‌ها (insurance.html)
+  ===================================================== */
+  .insurance-header {
+    padding: 0 16px;
+    margin: 10px auto 12px;
+  }
+
+  .insurance-intro {
+    padding: 0 16px;
+  }
+
+  .insurance-intro h2 {
+    font-size: 24px;
+  }
+
+  .insurance-intro p {
+    font-size: 14px;
+    line-height: 1.9;
+  }
+
+  .insurance-grid {
+    padding: 0 16px;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px;
+  }
+
+  .insurance-card {
+    padding: 16px 10px;
+  }
+
+  .insurance-card img {
+    width: 56px;
+    height: 56px;
+  }
+
+  .insurance-card h3 {
+    font-size: 15px;
+  }
+
+  .insurance-help {
+    margin: 0 16px 30px;
+    padding: 16px;
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+    width: auto;
+  }
+
+  /* =====================================================
+     صفحه داروخانه (pharmacy.html)
+  ===================================================== */
+  .pharmacy {
+    padding: 16px;
+  }
+
+  .top-section {
+    grid-template-columns: 1fr !important;
+    gap: 20px;
+  }
+
+  .section-title h1 {
+    font-size: 19px;
+    white-space: normal;
+  }
+
+  .service-cards {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px;
+  }
+
+  .service-cards .service-card .icon {
+    height: 44px;
+    font-size: 32px;
+  }
+
+  .service-cards .service-card h2 {
+    font-size: 15px;
+  }
+
+  .service-cards .service-card p {
+    font-size: 12.5px;
+  }
+
+  .working-hours {
+    min-height: 0;
+    padding: 16px;
+  }
+
+  .advantages {
+    grid-template-columns: repeat(2, 1fr) !important;
+    padding: 16px;
+    gap: 16px 10px;
+  }
+
+  .advantage {
+    border-left: none !important;
+    flex-direction: column;
+    text-align: center;
+    padding: 5px;
+  }
+
+  /* =====================================================
+     صفحات ارزیابی پرسنل (doctotors-evalution.html /
+     nurse-evaluation.html / pharmacy-evaluation.html)
+     تصمیم: به‌جای تبدیل به تک‌ستونی، همون چیدمان دو ستونه‌ی
+     دسکتاپ نگه داشته می‌شود ولی هدر/بنر عکس/فوتر تمام‌عرض
+     (edge-to-edge) می‌شوند. این استایل‌ها فقط روی صفحاتی اجرا
+     می‌شوند که .doctor-rating-area دارند (:has) و هیچ صفحه‌ی
+     دیگری را تحت تأثیر قرار نمی‌دهند. عمداً بدون انیمیشن.
+  ===================================================== */
+  body:has(.doctor-rating-area) .topbar {
+    max-width: none;
+    width: 100%;
+    border-radius: 0;
+  }
+
+  body:has(.doctor-rating-area) .insurance-header {
+    max-width: none;
+    width: 100%;
+    margin: 0 0 12px;
+    border-radius: 0;
+    padding: 0;
+  }
+
+  body:has(.doctor-rating-area) .footer {
+    max-width: none;
+    width: 100%;
+  }
+
+  /* .doctor-rating-area و اجزای داخلش عمداً دست‌نخورده می‌مانند
+     تا چیدمان دو ستونه‌ی دسکتاپ حفظ شود؛ خود کارت‌ها با اسکرول
+     افقی صفحه (در صورت نیاز) به‌جای تنگ‌شدن نمایش داده می‌شوند. */
+
+  /* =====================================================
+     گالری (gallery.html)
+  ===================================================== */
+  .gallery-page {
+    margin: 16px;
+    padding: 20px 14px;
+    border-radius: 20px;
+  }
+
+  .gallery-head h1 {
+    font-size: 24px;
+  }
+
+  .gallery-head p {
+    font-size: 14px;
+  }
+
+  .gallery-main {
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .gallery-main img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px;
+  }
+
+  .gallery-item {
+    height: 140px;
+  }
+
+  /* =====================================================
+     ANIMATIONS — افکت‌های حرکتی
+     همه با CSS خالص کار می‌کنند؛ هیچ‌کدام به کلاسی که باید توسط
+     جاوااسکریپت اضافه شود وابسته نیست (تا محتوا هیچ‌وقت به‌خاطر
+     اجرانشدن یک اسکریپت نامرئی نماند) — به‌جز دو مورد که از قبل
+     در همین فایل با کلاس .active کار می‌کردند (کشوی منو و اورلی).
+  ===================================================== */
+
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.94); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.6); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes overlayFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* ورود هدر و هیرو هنگام لود صفحه
+     نکته‌ی مهم: به topbar عمداً هیچ transform (نه در keyframe و نه
+     جای دیگه) داده نمی‌شود. چون .side-menu و .menu-overlay از نظر
+     HTML داخل topbar هستند، اگر topbar هر مقدار transform بگیرد
+     (حتی یک انیمیشن که در نهایت به حالت اولیه برمی‌گردد)، طبق
+     مشخصات CSS به containing-block عناصر position:fixed داخلش
+     تبدیل می‌شود و کشوی منو/اورلی به‌جای کل صفحه، فقط به اندازه‌ی
+     ارتفاع خود topbar کوچک و بدجا می‌شوند. برای همین اینجا فقط
+     opacity انیمیت می‌شود، نه transform. */
+  @keyframes fadeInOpacity {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .topbar {
+    animation: fadeInOpacity 0.45s var(--ease-smooth) both;
+  }
+
+  .hero-image {
+    animation: fadeInScale 0.6s var(--ease-smooth) both;
+  }
+
+  .hero-badge {
+    opacity: 0;
+    animation: fadeInUp 0.5s var(--ease-smooth) 0.15s both;
+  }
+
+  .hero-content h2 {
+    opacity: 0;
+    animation: fadeInUp 0.5s var(--ease-smooth) 0.25s both;
+  }
+
+  .hero-content p {
+    opacity: 0;
+    animation: fadeInUp 0.5s var(--ease-smooth) 0.35s both;
+  }
+
+  .hero-buttons {
+    opacity: 0;
+    animation: fadeInUp 0.5s var(--ease-smooth) 0.45s both;
+  }
+
+  /* ورود پلکانی کارت‌های خدمات و پزشکان هنگام لود صفحه */
+  .service-card,
+  .doctor-card {
+    opacity: 0;
+    animation: fadeInUp 0.5s var(--ease-smooth) both;
+  }
+
+  .services-grid .service-card:nth-child(1) { animation-delay: 0.05s; }
+  .services-grid .service-card:nth-child(2) { animation-delay: 0.10s; }
+  .services-grid .service-card:nth-child(3) { animation-delay: 0.15s; }
+  .services-grid .service-card:nth-child(4) { animation-delay: 0.20s; }
+  .services-grid .service-card:nth-child(5) { animation-delay: 0.25s; }
+  .services-grid .service-card:nth-child(6) { animation-delay: 0.30s; }
+
+  .doctor-grid .doctor-card:nth-child(1) { animation-delay: 0.05s; }
+  .doctor-grid .doctor-card:nth-child(2) { animation-delay: 0.10s; }
+  .doctor-grid .doctor-card:nth-child(3) { animation-delay: 0.15s; }
+  .doctor-grid .doctor-card:nth-child(4) { animation-delay: 0.20s; }
+  .doctor-grid .doctor-card:nth-child(n+5) { animation-delay: 0.25s; }
+
+  /* ظاهرشدن هنگام اسکرول — فقط در مرورگرهایی که از
+     animation-timeline پشتیبانی می‌کنند اجرا می‌شود. در بقیه‌ی
+     مرورگرها این بلوک کلاً نادیده گرفته می‌شود و عناصر با
+     opacity:1 پیش‌فرض نمایش داده می‌شوند، پس هیچ محتوایی به‌خاطر
+     عدم پشتیبانی مرورگر مخفی نمی‌ماند. */
+  @supports (animation-timeline: view()) {
+    .section-head,
+    .doctors-title,
+    .about-title,
+    .about-top,
+    .feature-card,
+    .clinic-info,
+    .map-box,
+    .insurance-card,
+    .gallery-item,
+    .advantage,
+    .footer {
+      opacity: 0;
+      transform: translateY(24px);
+      animation: scrollReveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 25%;
+    }
+
+    @keyframes scrollReveal {
+      to { opacity: 1; transform: translateY(0); }
+    }
+  }
+
+  /* فیدبک لمسی روی کارت‌ها */
+  .service-card,
+  .doctor-card,
+  .feature-card,
+  .insurance-card,
+  .gallery-item {
+    transition: transform 0.2s var(--ease-smooth), box-shadow 0.2s var(--ease-smooth);
+  }
+
+  .service-card:active,
+  .doctor-card:active,
+  .feature-card:active,
+  .insurance-card:active,
+  .gallery-item:active {
+    transform: scale(0.96);
+  }
+
+  /* فیدبک لمسی روی دکمه‌ها و لینک‌ها */
+  .btn,
+  .footer-links a,
+  .socials a,
+  .doctor-card a {
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+
+  .btn:active,
+  .footer-links a:active,
+  .socials a:active,
+  .doctor-card a:active {
+    transform: scale(0.94);
+  }
+
+  /* فیدبک لمسی روی خود دکمه‌ی همبرگر و دکمه‌ی بستن کشو
+     (فقط transform روی لمس؛ نمایش/رفتار بازشدن منو دست‌نخورده) */
+  .menu-btn,
+  .close-btn {
+    transition: transform 0.2s ease;
+  }
+
+  .menu-btn:active,
+  .close-btn:active {
+    transform: scale(0.85);
+  }
+
+  /* کشوی منو: easing نرم‌تر برای همون right/.active قبلی +
+     ورود پلکانی لینک‌ها وقتی کشو باز می‌شود */
+  .side-menu {
+    transition: right 0.35s var(--ease-smooth);
+  }
+
+  .side-menu.active .side-menu-links a {
+    opacity: 0;
+    animation: fadeInUp 0.35s var(--ease-smooth) both;
+  }
+
+  .side-menu.active .side-menu-links a:nth-child(1) { animation-delay: 0.08s; }
+  .side-menu.active .side-menu-links a:nth-child(2) { animation-delay: 0.13s; }
+  .side-menu.active .side-menu-links a:nth-child(3) { animation-delay: 0.18s; }
+  .side-menu.active .side-menu-links a:nth-child(4) { animation-delay: 0.23s; }
+  .side-menu.active .side-menu-links a:nth-child(5) { animation-delay: 0.28s; }
+  .side-menu.active .side-menu-links a:nth-child(6) { animation-delay: 0.33s; }
+  .side-menu.active .side-menu-links a:nth-child(n+7) { animation-delay: 0.38s; }
+
+  /* اورلی پشت کشو: فید نرم به‌جای ظاهرشدن ناگهانی */
+  .menu-overlay.active {
+    animation: overlayFadeIn 0.3s ease both;
+  }
+
+  /* دکمه‌ی برو به بالا: با نمایان‌شدن (تغییر display توسط جاوااسکریپت)
+     یک pop ملایم اجرا می‌شود */
+  #backToTop,
+  #BackToTop {
+    animation: popIn 0.35s var(--ease-bounce) both;
+    transition: transform 0.15s ease;
+  }
+
+  #backToTop:active,
+  #BackToTop:active {
+    transform: scale(0.88);
+  }
+
+  /* دسترس‌پذیری: فوکوس قابل‌مشاهده برای ناوبری با کیبورد */
+  a:focus-visible,
+  button:focus-visible,
+  .btn:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  /* احترام به تنظیم کاهش حرکت کاربر (Reduce Motion) */
+  @media (prefers-reduced-motion: reduce) {
+    * ,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+}
+
+  /* =====================================================
+     BACK TO TOP
+  ===================================================== */
+  #backToTop {
+    position: fixed;
+    bottom: 20px;
+    left: 16px; 
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    background: var(--primary);
+    color: #fff;
+    font-size: 18px;
+    box-shadow: var(--shadow-soft);
+    display: none;
+    z-index: 100;
+  }
+
+ .fade.section {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade.section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+

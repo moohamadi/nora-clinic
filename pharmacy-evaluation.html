@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1100">
+   <title>ارزیابی داروخانه درمانگاه نورا | خرم‌آباد</title>
+
+<meta name="description"
+      content="ارزیابی خدمات داروخانه درمانگاه نورا در خرم‌آباد و امتیازدهی به کیفیت ارائه خدمات به مراجعین.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mobile.css">
+
+
+    <!-- فونت فارسی -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+</head>
+<body>
+
+    <!-- هدر ساده -->
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-text">
+                <h1>درمانگاه نورا</h1>
+                <p>سلامت شما، اولویت ماست</p>
+            </div>
+            <div class="brand-logo">+</div>
+        </div>
+
+        <nav class="nav">
+            <a href="index.html">خانه</a>
+            <a href="index.html#services">خدمات</a>
+            <a href="index.html#doctors">پزشکان</a>
+            <a href="index.html#about">درباره ما</a>
+            <a href="index.html#contact">تماس با ما</a>
+                     
+      <div class="dropdown">
+        <a href="#" class="dropdown-toggle">⭐ ارزیابی پرسنل</a>
+        <div class="dropdown-menu">
+            <a href="doctotors-evalution.html">ارزیابی پزشکان</a>
+            <a href="nurse-evaluation.html">ارزیابی پرستاران</a>
+            <a href="pharmacy-evaluation.html">ارزیابی داروخانه</a>
+        </div>
+     </div>
+        </nav>
+
+        <div class="contact-box">
+            <span class="phone-icon">☎</span>
+            <div>
+                <strong>021-12345678</strong>
+                <p>همه روزه 8 صبح تا 8 شب</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- هدر تصویری صفحه ارزیابی -->
+    <section class="insurance-header">
+        <img src="images/header.png" alt="پرسنل داروخانه درمانگاه نورا">
+    </section>
+
+<!-- =====================================
+     بخش انتخاب پرسنل داروخانه
+===================================== -->
+
+<section class="doctor-rating-area">
+
+    <!-- ستون انتخاب پرسنل داروخانه -->
+    <div class="doctor-selector">
+
+        <div class="selector-title">
+            <span class="selector-icon">♙</span>
+            <h2>انتخاب پرسنل داروخانه</h2>
+        </div>
+
+        <!-- جستجوی پرسنل -->
+        <div class="doctor-search">
+            <span>⌕</span>
+            <input
+                type="text"
+                id="pharmacySearch"
+                placeholder="جستجو بر اساس نام پرسنل داروخانه..."
+            >
+        </div>
+
+        <!-- لیست پرسنل: این کانتینر خالیه چون JS به‌صورت خودکار
+             از روی آرایه pharmacyStaff توی pharmacy-evaluation.js پرش می‌کنه -->
+        <div class="doctor-list" id="pharmacyList">
+        </div>
+
+
+        <!-- مشاهده همه پرسنل داروخانه -->
+        <button class="all-doctors-btn">
+            <span>♧</span>
+            مشاهده همه پرسنل داروخانه
+        </button>
+
+    </div>
+
+<!-- =====================================
+     بخش اطلاعات و ارزیابی پرسنل داروخانه
+===================================== -->
+
+<div class="doctor-rating-content">
+
+
+    <!-- =================================
+         کارت اطلاعات پرسنل داروخانه
+    ================================== -->
+
+    <div class="doctor-info-card">
+
+        <!-- عنوان -->
+        <div class="doctor-card-title">
+            <h2>اطلاعات پرسنل داروخانه</h2>
+        </div>
+
+
+        <!-- محتوای اطلاعات -->
+        <div class="doctor-info-content">
+
+            <!-- عکس -->
+            <div class="doctor-photo">
+
+                <img
+                    id="selectedPharmacyImage"
+                    src=""
+                    alt=""
+                >
+
+            </div>
+
+
+            <!-- اطلاعات -->
+            <div class="doctor-details">
+
+                <h1 id="selectedPharmacyName">
+                    —
+                </h1>
+
+                <span
+                    class="doctor-specialty"
+                    id="selectedPharmacyRole">
+                    —
+                </span>
+
+
+                <!-- اطلاعات تکمیلی -->
+
+                <div class="doctor-meta">
+
+
+                    <!-- سال فارغ التحصیلی -->
+                    <div class="doctor-meta-item">
+
+                        <span class="meta-icon">
+                            ▣
+                        </span>
+
+                        <div><small>سال فارغ‌التحصیلی</small>
+
+                            <strong id="selectedPharmacyGraduation">
+                                —
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <!-- دانشگاه / موسسه آموزشی -->
+                    <div class="doctor-meta-item">
+
+                        <span class="meta-icon">
+                            🎓
+                        </span>
+
+                        <div>
+                            <small>فارغ‌التحصیل از</small>
+
+                            <strong id="selectedPharmacyUniversity">
+                                —
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <!-- سابقه فعالیت -->
+                    <div class="doctor-meta-item">
+
+                        <span class="meta-icon">
+                            ◷
+                        </span>
+
+                        <div>
+                            <small>سابقه فعالیت</small>
+
+                            <strong id="selectedPharmacyExperience">
+                                —
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <!-- شماره پروانه / کد پرسنلی -->
+                    <div class="doctor-meta-item">
+
+                        <span class="meta-icon">
+                            ▣
+                        </span>
+
+                        <div>
+                            <small>شماره پروانه / کد پرسنلی</small>
+
+                            <strong id="selectedPharmacyLicenseCode">
+                                —
+                            </strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================
+         کارت میانگین امتیازات
+    ================================== -->
+
+    <div class="doctor-average-card">
+
+        <div class="average-score-circle">
+            <svg viewBox="0 0 120 120" class="average-circle-svg">
+                <circle class="circle-bg" cx="60" cy="60" r="52"></circle>
+                <circle class="circle-progress" id="averageCircleProgress" cx="60" cy="60" r="52"></circle>
+            </svg>
+            <div class="average-circle-text">
+                <strong id="averageScoreNumber">۰</strong>
+                <span>از ۵</span>
+            </div>
+        </div>
+
+        <div class="average-score-details">
+            <h3>میانگین امتیازات کلی</h3>
+            <div class="average-stars" id="averageStarsDisplay"></div>
+            <p id="averageReviewCount">هنوز نظری ثبت نشده</p>
+        </div>
+
+        <div class="average-breakdown" id="averageBreakdown">
+            <!-- نوارهای ۱ تا ۵ ستاره با JS ساخته می‌شن -->
+        </div>
+
+    </div>
+
+
+    <!-- =================================
+         کارت امتیازدهی
+    ================================== -->
+
+    <div class="doctor-evaluation-card">
+
+
+        <!-- عنوان -->
+
+        <div class="evaluation-title">
+
+            <h2>
+                امتیازدهی به پرسنل داروخانه
+            </h2>
+
+        </div>
+
+
+        <!-- معیارهای ارزیابی -->
+
+        <div class="evaluation-list">
+
+
+            <!-- دقت در تحویل و تطبیق دارو -->
+
+            <div class="evaluation-row">
+
+                <div class="evaluation-name">
+
+                    <span class="evaluation-icon">
+                        ⚕
+                    </span>
+
+                    <span>
+                        دقت در تحویل و تطبیق دارو
+                    </span>
+
+                </div>
+
+
+                <div class="rating-stars" data-category="accuracy">
+
+                 <div class="star-group">
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                 </div>
+
+                </div>
+
+            </div>
+            
+            <!-- راهنمایی درباره نحوه مصرف دارو -->
+
+            <div class="evaluation-row">
+
+                <div class="evaluation-name">
+
+                    <span class="evaluation-icon">
+                        ☏
+                    </span>
+
+                    <span>
+                        راهنمایی درباره نحوه مصرف دارو
+                    </span>
+
+                </div>
+
+
+                <div class="rating-stars"
+                    data-category="guidance">
+
+                 <div class="star-group">
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                 </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ارائه قیمت منصفانه -->
+
+            <div class="evaluation-row">
+
+                <div class="evaluation-name">
+
+                    <span class="evaluation-icon">
+                        ⚖
+                    </span>
+
+                    <span>
+                        ارائه قیمت منصفانه
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="rating-stars"
+                    data-category="fairPricing">
+
+                 <div class="star-group">
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                 </div>
+                </div>
+
+            </div>
+
+
+
+            <!-- برخورد محترمانه و پاسخگویی -->
+
+            <div class="evaluation-row">
+
+                <div class="evaluation-name">
+
+                    <span class="evaluation-icon">
+                        ☺
+                    </span>
+
+                    <span>
+                        برخورد محترمانه و پاسخگویی
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="rating-stars"
+                    data-category="behavior">
+
+                 <div class="star-group">
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                 </div>
+                </div>
+
+            </div>
+
+
+
+            <!-- رعایت بهداشت و نظم داروخانه -->
+
+            <div class="evaluation-row">
+
+                <div class="evaluation-name">
+
+                    <span class="evaluation-icon">
+                        ✦
+                    </span>
+
+                    <span>
+                        رعایت بهداشت و نظم داروخانه
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="rating-stars"
+                    data-category="hygiene">
+
+                 <div class="star-group">
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                    <button type="button">★</button>
+                 </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- پیام محرمانگی -->
+
+        <div class="evaluation-notice">
+
+            <span class="notice-icon">
+                ♢
+            </span>
+
+            <p>
+                اطلاعات شما محرمانه باقی می‌ماند و فقط برای
+                بهبود کیفیت خدمات استفاده می‌شود.
+            </p>
+
+        </div>
+
+
+
+        <!-- دکمه ثبت -->
+
+        <button
+            type="button"
+            class="submit-evaluation">
+
+            <span>
+                ثبت ارزیابی
+            </span>
+
+            <span class="submit-icon">
+                ➤
+            </span>
+
+        </button>
+
+    </div>
+
+</div>
+</section>
+
+
+    <div class="copyright">
+        © تمامی حقوق این وبسایت متعلق به درمانگاه نورا می‌باشد.
+    </div>
+
+
+ <script src="script.js"></script>
+ <script src="pharmacy-evaluation.js"></script>
+ 
+</body>
+</html>
