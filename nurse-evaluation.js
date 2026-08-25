@@ -6,7 +6,7 @@ console.log("nurse-evaluation loaded");
    و صفحات مستقیم از http://localhost:3000 باز شدن،
    کافیه این مقدار رو '' (رشته‌ی خالی) کنی تا آدرس‌ها نسبی بشن.
 ===================================== */
-const API_BASE = 'http://localhost:3000';
+const API_BASE = '';
 const SECTION = 'nurses';
 
 /* =====================================
