@@ -16,7 +16,7 @@ const shiftsFile = path.join(__dirname, "shifts.json");
    ⚠️ این رمز رو حتماً به یک رمز دلخواه و خصوصی تغییر بده
    قبل از اینکه سایت رو آنلاین (روی رندر) منتشر کنی.
 ===================================================== */
-const SHIFT_ADMIN_PASSWORD = "we better 2 change/;";
+const SHIFT_ADMIN_PASSWORD = "shiftlooksclear1!";
 
 /* =====================================================
    ساختار پیش‌فرض rating.json
