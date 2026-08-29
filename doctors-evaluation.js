@@ -60,9 +60,9 @@ const doctors = [
         name: "دکتر سیده فاطمه موسوی",
         specialty: "پزشک عمومی",
         image: "images/docters/سیده فاطمه موسوی.png",
-        graduation: "۱۳۸۸",
+        graduation: "۱۴۰۲",
         university: "دانشگاه علوم پزشکی خرم آباد",
-        experience: "۱۴ سال",
+        experience: "۳ سال",
         medicalCode: "۱۱۶۵۴"
     },
 
@@ -71,8 +71,8 @@ const doctors = [
         name: "دکتر تندیس خسروی",
         specialty: "پزشک عمومی",
         image: "images/docters/تندیس خسروی9.png",
-        graduation: "۱۳۹۱",
-        university: "دانشگاه علوم پزشکی اصفهان",
+        graduation: "۱۳۹۸",
+        university: "دانشگاه علوم پزشکی خرم آباد",
         experience: "۱۱ سال",
         medicalCode: "۱۴۲۳۱"
     },
@@ -82,7 +82,7 @@ const doctors = [
         name: "دکتر راضیه قاسمی‌پور",
         specialty: "پزشک عمومی",
         image: "images/docters/راضیه قاسمی پور.png",
-        graduation: "۱۳۸۹",
+        graduation: "۱۳۹۸",
         university: "دانشگاه علوم پزشکی شیراز",
         experience: "۱۳ سال",
         medicalCode: "۱۲۳۴۵"
@@ -104,9 +104,9 @@ const doctors = [
         name: "دکتر نوشین غلامی",
         specialty: "پزشک عمومی",
         image: "images/docters/نوشین غلامی .png",
-        graduation: "۱۳۸۷",
+        graduation: "۱۴۰۲",
         university: "دانشگاه علوم پزشکی همدان",
-        experience: "۱۵ سال",
+        experience: "۳ سال",
         medicalCode: "۱۰۹۸۷"
     },
 
@@ -116,7 +116,7 @@ const doctors = [
         specialty: "پزشک عمومی",
         image: "images/docters/زهرا محمدپور.png",
         graduation: "۱۳۹۰",
-        university: "دانشگاه علوم پزشکی ایران",
+        university: "دانشگاه علوم پزشکی اصفهان",
         experience: "۱۲ سال",
         medicalCode: "۱۳۵۶۷"
     },

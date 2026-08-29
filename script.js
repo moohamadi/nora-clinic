@@ -328,3 +328,28 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.15 });
 
 fadeSections.forEach(section => observer.observe(section));
+
+// اسلایدر هیروی موبایل
+(function () {
+  const slides = document.querySelectorAll(".hero-slide");
+  const dots = document.querySelectorAll(".hero-slide-dots .dot");
+  if (!slides.length) return;
+
+  let current = 0;
+
+  function showSlide(i) {
+    slides.forEach((s) => s.classList.remove("active"));
+    dots.forEach((d) => d.classList.remove("active"));
+    slides[i].classList.add("active");
+    dots[i].classList.add("active");
+    current = i;
+  }
+
+  dots.forEach((dot, i) => {
+    dot.addEventListener("click", () => showSlide(i));
+  });
+
+  setInterval(() => {
+    showSlide((current + 1) % slides.length);
+  }, 5000);
+})();
