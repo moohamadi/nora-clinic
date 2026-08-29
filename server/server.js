@@ -242,7 +242,9 @@ const server = http.createServer((req, res) => {
                 const data = readRatingData();
                 const key = String(id);
 
-                if (!data[section][key]) {
+                // اگر مقدار قبلی وجود نداشت، یا فرمت قدیمی/خراب (آرایه) بود،
+                // با یک شیء خالی جایگزین می‌شود تا فرمت همیشه یکدست بمونه
+                if (!data[section][key] || Array.isArray(data[section][key])) {
                     data[section][key] = {};
                 }
 

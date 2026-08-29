@@ -327,8 +327,8 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, { threshold: 0.15 });
 
-fadeSections.forEach(section => observer.observe(section));
 
+fadeSections.forEach(section => observer.observe(section));
 // اسلایدر هیروی موبایل
 (function () {
   const slides = document.querySelectorAll(".hero-slide");
@@ -336,20 +336,49 @@ fadeSections.forEach(section => observer.observe(section));
   if (!slides.length) return;
 
   let current = 0;
+  let timer = null;
 
   function showSlide(i) {
+    current = (i + slides.length) % slides.length;
     slides.forEach((s) => s.classList.remove("active"));
     dots.forEach((d) => d.classList.remove("active"));
-    slides[i].classList.add("active");
-    dots[i].classList.add("active");
-    current = i;
+    slides[current].classList.add("active");
+    if (dots[current]) dots[current].classList.add("active");
+  }
+
+  function startAutoplay() {
+    if (timer) clearInterval(timer);
+    timer = setInterval(() => showSlide(current + 1), 5000);
   }
 
   dots.forEach((dot, i) => {
-    dot.addEventListener("click", () => showSlide(i));
+    dot.addEventListener("click", () => {
+      showSlide(i);
+      startAutoplay(); // ریست تایمر بعد از کلیک دستی
+    });
   });
 
-  setInterval(() => {
-    showSlide((current + 1) % slides.length);
-  }, 5000);
+  // پشتیبانی از سواپ با انگشت روی موبایل
+  const heroWrapper = document.querySelector(".hero-slide-wrapper") || slides[0].parentElement;
+  let touchStartX = 0;
+
+  heroWrapper.addEventListener("touchstart", (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+
+  heroWrapper.addEventListener("touchend", (e) => {
+    const touchEndX = e.changedTouches[0].screenX;
+    const diff = touchEndX - touchStartX;
+    if (Math.abs(diff) < 40) return; // حرکت خیلی کوچیک، نادیده گرفته میشه
+
+    if (diff < 0) {
+      showSlide(current + 1); // سواپ به چپ → اسلاید بعدی
+    } else {
+      showSlide(current - 1); // سواپ به راست → اسلاید قبلی
+    }
+    startAutoplay();
+  });
+
+  showSlide(0);
+  startAutoplay();
 })();
