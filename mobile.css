@@ -45,7 +45,7 @@ body:has(.doctor-rating-area) .footer {
 
 .menu-btn,
 .side-menu,
-.menu-overlay
+.menu-overlay,
 .mobile-hero-slider {
   display: none;
 }
