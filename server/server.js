@@ -1,29 +1,31 @@
 const http = require("http");
-const fs = require("fs");
 const path = require("path");
+const { MongoClient } = require("mongodb");
 
 /* =====================================================
    مسیرها
-   این فایل داخل پوشه‌ی server/ قرار داره، پس ریشه‌ی سایت
-   (جایی که index.html و بقیه صفحات هستن) یک پوشه بالاتره.
 ===================================================== */
 const SITE_ROOT = path.join(__dirname, "..");
-const ratingFile = path.join(__dirname, "rating.json");
-const shiftsFile = path.join(__dirname, "shifts.json");
 
 /* =====================================================
-   رمز عبور مدیر برای ویرایش شیفت‌ها
-   ⚠️ این رمز رو حتماً به یک رمز دلخواه و خصوصی تغییر بده
-   قبل از اینکه سایت رو آنلاین (روی رندر) منتشر کنی.
+   اتصال به MongoDB
+   ⚠️ این مقدار رو از داشبورد Atlas کپی کن
+   و در Render به عنوان Environment Variable بذار (اسم: MONGO_URI)
+===================================================== */
+const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017";
+const DB_NAME = "nora_clinic";
+
+let db;
+let shiftsCollection;
+let ratingCollection;
+
+/* =====================================================
+   رمز عبور مدیر
 ===================================================== */
 const SHIFT_ADMIN_PASSWORD = "shiftlooksclear1!";
 
 /* =====================================================
-   ساختار پیش‌فرض rating.json
-   سه بخش: پزشکان، پرستاران، داروخانه
-   هرکدوم: { "شناسه‌ی فرد": { "شناسه‌ی رأی‌دهنده": {دسته‌ای: امتیاز, ...} } }
-   هر مرورگر/گوشی یک voterId ثابت داره، پس رأی دوم همون شخص
-   جای رأی قبلی‌اش را می‌گیرد (ویرایش) نه یک رأی اضافه.
+   ساختار پیش‌فرض
 ===================================================== */
 const DEFAULT_RATING_DATA = {
     doctors: {},
@@ -32,76 +34,110 @@ const DEFAULT_RATING_DATA = {
 };
 
 const VALID_SECTIONS = ["doctors", "nurses", "pharmacy"];
+const VALID_SHIFT_GROUPS = ["doctors", "nurses"];
+const SINGLE_SHIFT_CODES = ["M", "E", "N", "X"];
+
+function isValidShiftCode(code) {
+    if (code === "") return true;
+    if (typeof code !== "string") return false;
+    const parts = code.split(",").map(p => p.trim()).filter(Boolean);
+    if (parts.length < 1 || parts.length > 2) return false;
+    if (!parts.every(p => SINGLE_SHIFT_CODES.includes(p))) return false;
+    if (new Set(parts).size !== parts.length) return false;
+    return true;
+}
 
 /* =====================================================
-   خواندن امن rating.json
-   اگر فایل خالی/خراب/ناقص بود، ساختار پیش‌فرض جایگزین می‌شه
+   اتصال به دیتابیس (فقط یک بار اجرا میشه)
 ===================================================== */
-function readRatingData() {
+async function connectToDatabase() {
     try {
-        const raw = fs.readFileSync(ratingFile, "utf8");
-        const parsed = JSON.parse(raw);
+        const client = new MongoClient(MONGO_URI);
+        await client.connect();
+        console.log("✅ به MongoDB متصل شد");
+
+        db = client.db(DB_NAME);
+        shiftsCollection = db.collection("shifts");
+        ratingCollection = db.collection("ratings");
+
+        // ایجاد index برای جستجوی سریع‌تر
+        await shiftsCollection.createIndex({ group: 1, person: 1 });
+        await ratingCollection.createIndex({ section: 1, id: 1 });
+
+    } catch (err) {
+        console.error("❌ خطا در اتصال به MongoDB:", err);
+        process.exit(1);
+    }
+}
+
+/* =====================================================
+   حذف فیلد _id قبل از $set
+   (چون _id غیرقابل تغییره و MongoDB با ست کردنش دوباره خطا میده)
+===================================================== */
+function stripId(data) {
+    const { _id, ...rest } = data;
+    return rest;
+}
+
+/* =====================================================
+   خواندن/نوشتن شیفت‌ها از MongoDB
+===================================================== */
+async function readShiftsData() {
+    try {
+        const data = await shiftsCollection.findOne({ _id: "main" });
         return {
-            doctors: parsed.doctors || {},
-            nurses: parsed.nurses || {},
-            pharmacy: parsed.pharmacy || {}
+            doctors: (data && data.doctors) || {},
+            nurses: (data && data.nurses) || {}
         };
     } catch (err) {
+        console.error("خطا در خواندن شیفت‌ها:", err);
+        return { doctors: {}, nurses: {} };
+    }
+}
+
+async function writeShiftsData(data) {
+    try {
+        await shiftsCollection.updateOne(
+            { _id: "main" },
+            { $set: stripId(data) },
+            { upsert: true }
+        );
+    } catch (err) {
+        console.error("خطا در نوشتن شیفت‌ها:", err);
+    }
+}
+
+/* =====================================================
+   خواندن/نوشتن امتیازها از MongoDB
+===================================================== */
+async function readRatingData() {
+    try {
+        const data = await ratingCollection.findOne({ _id: "main" });
+        return {
+            doctors: (data && data.doctors) || {},
+            nurses: (data && data.nurses) || {},
+            pharmacy: (data && data.pharmacy) || {}
+        };
+    } catch (err) {
+        console.error("خطا در خواندن امتیازها:", err);
         return JSON.parse(JSON.stringify(DEFAULT_RATING_DATA));
     }
 }
 
-function writeRatingData(data) {
-    fs.writeFileSync(ratingFile, JSON.stringify(data, null, 2), "utf8");
-}
-
-/* =====================================================
-   ساختار پیش‌فرض shifts.json
-   دو گروه: پزشکان، پرستاران
-   هرکدوم: { "نام فرد": { "شماره روز": "M"|"E"|"N"|"X" } }
-   M=صبح  E=عصر  N=شب  X=پیک شب
-===================================================== */
-const DEFAULT_SHIFTS_DATA = {
-    doctors: {},
-    nurses: {}
-};
-
-const VALID_SHIFT_GROUPS = ["doctors", "nurses"];
-const SINGLE_SHIFT_CODES = ["M", "E", "N", "X"];
-
-/* کد شیفت می‌تونه خالی، یک کد تکی، یا دو کد ترکیبی (مثل "M,E") باشه */
-function isValidShiftCode(code) {
-    if (code === "") return true;
-    if (typeof code !== "string") return false;
-
-    const parts = code.split(",").map(function (p) { return p.trim(); }).filter(Boolean);
-
-    if (parts.length < 1 || parts.length > 2) return false;
-    if (!parts.every(function (p) { return SINGLE_SHIFT_CODES.includes(p); })) return false;
-    if (new Set(parts).size !== parts.length) return false; // بدون تکرار
-
-    return true;
-}
-
-function readShiftsData() {
+async function writeRatingData(data) {
     try {
-        const raw = fs.readFileSync(shiftsFile, "utf8");
-        const parsed = JSON.parse(raw);
-        return {
-            doctors: parsed.doctors || {},
-            nurses: parsed.nurses || {}
-        };
+        await ratingCollection.updateOne(
+            { _id: "main" },
+            { $set: stripId(data) },
+            { upsert: true }
+        );
     } catch (err) {
-        return JSON.parse(JSON.stringify(DEFAULT_SHIFTS_DATA));
+        console.error("خطا در نوشتن امتیازها:", err);
     }
 }
 
-function writeShiftsData(data) {
-    fs.writeFileSync(shiftsFile, JSON.stringify(data, null, 2), "utf8");
-}
-
 /* =====================================================
-   خواندن بدنه‌ی (body) درخواست POST
+   خواندن بدنه‌ی درخواست POST
 ===================================================== */
 function readRequestBody(req) {
     return new Promise((resolve, reject) => {
@@ -119,7 +155,7 @@ function readRequestBody(req) {
 }
 
 /* =====================================================
-   ارسال پاسخ JSON (همراه هدرهای CORS)
+   ارسال پاسخ JSON
 ===================================================== */
 function sendJson(res, statusCode, payload) {
     res.writeHead(statusCode, {
@@ -132,7 +168,7 @@ function sendJson(res, statusCode, payload) {
 }
 
 /* =====================================================
-   سرو کردن فایل‌های استاتیک سایت (html, css, js, images...)
+   سرو کردن فایل‌های استاتیک
 ===================================================== */
 const MIME_TYPES = {
     ".html": "text/html; charset=utf-8",
@@ -154,21 +190,16 @@ const MIME_TYPES = {
 function serveStaticFile(req, res) {
     const parsedUrl = new URL(req.url, "http://localhost");
     let pathname = decodeURIComponent(parsedUrl.pathname);
-
-    if (pathname === "/") {
-        pathname = "/index.html";
-    }
+    if (pathname === "/") pathname = "/index.html";
 
     const filePath = path.join(SITE_ROOT, pathname);
-
-    // جلوگیری از خروج از پوشه‌ی اصلی سایت (Directory traversal)
     if (!filePath.startsWith(SITE_ROOT)) {
         res.writeHead(403, { "Content-Type": "text/plain; charset=utf-8" });
         res.end("دسترسی غیرمجاز");
         return;
     }
 
-    fs.readFile(filePath, (err, content) => {
+    require("fs").readFile(filePath, (err, content) => {
         if (err) {
             if (err.code === "ENOENT") {
                 res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
@@ -179,10 +210,8 @@ function serveStaticFile(req, res) {
             }
             return;
         }
-
         const ext = path.extname(filePath).toLowerCase();
         const contentType = MIME_TYPES[ext] || "application/octet-stream";
-
         res.writeHead(200, { "Content-Type": contentType });
         res.end(content);
     });
@@ -191,9 +220,8 @@ function serveStaticFile(req, res) {
 /* =====================================================
    سرور اصلی
 ===================================================== */
-const server = http.createServer((req, res) => {
-
-    // درخواست‌های preflight مربوط به CORS
+const server = http.createServer(async (req, res) => {
+    // CORS preflight
     if (req.method === "OPTIONS") {
         res.writeHead(204, {
             "Access-Control-Allow-Origin": "*",
@@ -204,147 +232,133 @@ const server = http.createServer((req, res) => {
         return;
     }
 
-    // -------- GET /rating : دریافت همه‌ی امتیازها --------*/
+    // -------- GET /rating --------
     if (req.url === "/rating" && req.method === "GET") {
         console.log("REQUEST RATING (GET)");
-        const data = readRatingData();
+        const data = await readRatingData();
         sendJson(res, 200, data);
         return;
     }
 
-    // -------- POST /rating : ثبت یا ویرایش امتیاز یک نفر --------*/
+    // -------- POST /rating --------
     if (req.url === "/rating" && req.method === "POST") {
         console.log("REQUEST RATING (POST)");
+        try {
+            const body = await readRequestBody(req);
+            const { section, id, voterId, ratings } = body;
 
-        readRequestBody(req)
-            .then((body) => {
-                const { section, id, voterId, ratings } = body;
+            if (!VALID_SECTIONS.includes(section)) {
+                sendJson(res, 400, { error: "بخش نامعتبر است" });
+                return;
+            }
+            if (id === undefined || id === null || id === "") {
+                sendJson(res, 400, { error: "شناسه ارسال نشده است" });
+                return;
+            }
+            if (!voterId || typeof voterId !== "string") {
+                sendJson(res, 400, { error: "شناسه‌ی رأی‌دهنده ارسال نشده است" });
+                return;
+            }
+            if (!ratings || typeof ratings !== "object" || Array.isArray(ratings)) {
+                sendJson(res, 400, { error: "امتیازها نامعتبر است" });
+                return;
+            }
 
-                if (!VALID_SECTIONS.includes(section)) {
-                    sendJson(res, 400, {
-                        error: "بخش (section) نامعتبر است. باید یکی از این‌ها باشد: doctors, nurses, pharmacy"
-                    });
-                    return;
-                }
-                if (id === undefined || id === null || id === "") {
-                    sendJson(res, 400, { error: "شناسه (id) ارسال نشده است." });
-                    return;
-                }
-                if (!voterId || typeof voterId !== "string") {
-                    sendJson(res, 400, { error: "شناسه‌ی رأی‌دهنده (voterId) ارسال نشده است." });
-                    return;
-                }
-                if (!ratings || typeof ratings !== "object" || Array.isArray(ratings)) {
-                    sendJson(res, 400, { error: "امتیازها (ratings) نامعتبر است." });
-                    return;
-                }
-
-                const data = readRatingData();
-                const key = String(id);
-
-                // اگر مقدار قبلی وجود نداشت، یا فرمت قدیمی/خراب (آرایه) بود،
-                // با یک شیء خالی جایگزین می‌شود تا فرمت همیشه یکدست بمونه
-                if (!data[section][key] || Array.isArray(data[section][key])) {
-                    data[section][key] = {};
-                }
-
-                // اگر همین voterId قبلاً امتیاز داده باشه، امتیاز قبلی‌اش جایگزین می‌شه (ویرایش)
-                // در غیر این صورت، این یک رأی جدیده
-                data[section][key][voterId] = ratings;
-
-                writeRatingData(data);
-
-                sendJson(res, 200, { success: true });
-            })
-            .catch((err) => {
-                sendJson(res, 400, { error: err.message });
-            });
-
+            const data = await readRatingData();
+            const key = String(id);
+            if (!data[section][key] || Array.isArray(data[section][key])) {
+                data[section][key] = {};
+            }
+            data[section][key][voterId] = ratings;
+            await writeRatingData(data);
+            sendJson(res, 200, { success: true });
+        } catch (err) {
+            sendJson(res, 400, { error: err.message });
+        }
         return;
     }
 
-    // -------- GET /shifts : دریافت همه‌ی شیفت‌ها --------
+    // -------- GET /shifts --------
     if (req.url === "/shifts" && req.method === "GET") {
         console.log("REQUEST SHIFTS (GET)");
-        const data = readShiftsData();
+        const data = await readShiftsData();
         sendJson(res, 200, data);
         return;
     }
 
-    // -------- POST /shifts/login : فقط بررسی رمز مدیر (بدون تغییر داده) --------
+    // -------- POST /shifts/login --------
     if (req.url === "/shifts/login" && req.method === "POST") {
-        readRequestBody(req)
-            .then((body) => {
-                if (body.password === SHIFT_ADMIN_PASSWORD) {
-                    sendJson(res, 200, { success: true });
-                } else {
-                    sendJson(res, 401, { error: "رمز عبور اشتباه است." });
-                }
-            })
-            .catch((err) => {
-                sendJson(res, 400, { error: err.message });
-            });
+        try {
+            const body = await readRequestBody(req);
+            if (body.password === SHIFT_ADMIN_PASSWORD) {
+                sendJson(res, 200, { success: true });
+            } else {
+                sendJson(res, 401, { error: "رمز عبور اشتباه است" });
+            }
+        } catch (err) {
+            sendJson(res, 400, { error: err.message });
+        }
         return;
     }
 
-    // -------- POST /shifts : ثبت، ویرایش یا پاک‌کردن شیفت یک روز --------
+    // -------- POST /shifts --------
     if (req.url === "/shifts" && req.method === "POST") {
         console.log("REQUEST SHIFTS (POST)");
+        try {
+            const body = await readRequestBody(req);
+            const { password, group, person, day, code } = body;
 
-        readRequestBody(req)
-            .then((body) => {
-                const { password, group, person, day, code } = body;
+            if (password !== SHIFT_ADMIN_PASSWORD) {
+                sendJson(res, 401, { error: "رمز عبور اشتباه است" });
+                return;
+            }
+            if (!VALID_SHIFT_GROUPS.includes(group)) {
+                sendJson(res, 400, { error: "گروه نامعتبر است" });
+                return;
+            }
+            if (!person || typeof person !== "string") {
+                sendJson(res, 400, { error: "نام فرد ارسال نشده است" });
+                return;
+            }
+            const dayNum = Number(day);
+            if (!Number.isInteger(dayNum) || dayNum < 1 || dayNum > 31) {
+                sendJson(res, 400, { error: "روز نامعتبر است" });
+                return;
+            }
+            if (!isValidShiftCode(code)) {
+                sendJson(res, 400, { error: "کد شیفت نامعتبر است" });
+                return;
+            }
 
-                if (password !== SHIFT_ADMIN_PASSWORD) {
-                    sendJson(res, 401, { error: "رمز عبور اشتباه است." });
-                    return;
-                }
-                if (!VALID_SHIFT_GROUPS.includes(group)) {
-                    sendJson(res, 400, { error: "گروه نامعتبر است. باید doctors یا nurses باشد." });
-                    return;
-                }
-                if (!person || typeof person !== "string") {
-                    sendJson(res, 400, { error: "نام فرد ارسال نشده است." });
-                    return;
-                }
-
-                const dayNum = Number(day);
-                if (!Number.isInteger(dayNum) || dayNum < 1 || dayNum > 31) {
-                    sendJson(res, 400, { error: "روز نامعتبر است (باید بین ۱ تا ۳۱ باشد)." });
-                    return;
-                }
-                if (!isValidShiftCode(code)) {
-                    sendJson(res, 400, { error: "کد شیفت نامعتبر است." });
-                    return;
-                }
-
-                const data = readShiftsData();
-                if (!data[group][person]) {
-                    data[group][person] = {};
-                }
-
-                if (code === "") {
-                    delete data[group][person][dayNum];
-                } else {
-                    data[group][person][dayNum] = code;
-                }
-
-                writeShiftsData(data);
-                sendJson(res, 200, { success: true });
-            })
-            .catch((err) => {
-                sendJson(res, 400, { error: err.message });
-            });
-
+            const data = await readShiftsData();
+            if (!data[group][person]) {
+                data[group][person] = {};
+            }
+            if (code === "") {
+                delete data[group][person][dayNum];
+            } else {
+                data[group][person][dayNum] = code;
+            }
+            await writeShiftsData(data);
+            sendJson(res, 200, { success: true });
+        } catch (err) {
+            sendJson(res, 400, { error: err.message });
+        }
         return;
     }
 
-    // -------- هر مسیر دیگه‌ای: فایل استاتیک سایت --------
+    // -------- فایل استاتیک --------
     serveStaticFile(req, res);
 });
 
+/* =====================================================
+   راه‌اندازی سرور
+===================================================== */
 const PORT = process.env.PORT || 3000;
 
-server.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+// اول به دیتابیس وصل شو، بعد سرور رو راه‌اندازی کن
+connectToDatabase().then(() => {
+    server.listen(PORT, () => {
+        console.log(`🚀 Server running on http://localhost:${PORT}`);
+    });
 });

@@ -148,9 +148,9 @@ const doctors = [
         name: "دکتر امیرحسین شاکرمی",
         specialty: "پزشک عمومی",
         image: "images/docters/امیرحسین شاکرمی .png",
-        graduation: "۱۳۹۱",
-        university: "دانشگاه علوم پزشکی خرم آباد",
-        experience: "۱۱ سال",
+        graduation: "۱۴۰۲",
+        university: "دانشگاه علوم پزشکی همدان",
+        experience: "۳ سال",
         medicalCode: "۱۴۱۲۳"
     }
 
@@ -162,7 +162,7 @@ const doctors = [
 
 let selectedDoctorId = doctors[0].id;
 
-/* =====================================
+/* =================== ==================
    کش محلی امتیازها (از سرور خونده می‌شه)
    ساختار: { "شناسه‌ی پزشک": [ {skill: 5, behavior: 4, ...}, ... ] }
 ===================================== */

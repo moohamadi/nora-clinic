@@ -45,7 +45,8 @@ body:has(.doctor-rating-area) .footer {
 
 .menu-btn,
 .side-menu,
-.menu-overlay {
+.menu-overlay
+.mobile-hero-slider {
   display: none;
 }
 
@@ -140,9 +141,8 @@ body:has(.doctor-rating-area) .footer {
 
   .contact-box strong,
   .contact-box p {
-    display: none; /* روی موبایل فقط آیکون تماس نمایش داده شود */
+    display:flex
   }
-
   .contact-box .phone-icon {
     font-size: 18px;
     color: var(--primary);
