@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://nora-clinic.onrender.com/sitemap.xml
+Sitemap: https://nora-clinic.ir/sitemap.xml

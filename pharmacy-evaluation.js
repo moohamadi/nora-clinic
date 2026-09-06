@@ -42,19 +42,17 @@ const pharmacyStaff = [
         university: "",
         experience: "",
         licenseCode: ""
-    }
+    
 
-    // بقیه‌ی پرسنل (۳ تکنسین) بعداً همینجا اضافه می‌شن، مثلاً:
-    // {
-    //     id: 2,
-    //     name: "...",
-    //     role: "تکنسین داروخانه",
-    //     image: "images/pharmacy/....png",
-    //     graduation: "۱۳۹۲",
-    //     university: "...",
-    //     experience: "...",
-    //     licenseCode: "..."
-    // }
+        
+    },
+  {
+       id: 2,
+        name: "اکبر اسماعیلی ",
+         role: "تکنسین داروخانه",
+       image: "images/pharmacy/....png",
+         experience: "20 سال",
+    }
 ];
 
 /* =====================================
