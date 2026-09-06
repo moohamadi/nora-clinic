@@ -743,6 +743,7 @@ body:has(.doctor-rating-area) .footer {
   }
 
   .copyright {
+    margin-top: auto;
     text-align: center;
     font-size: 11px;
     color: #cfe4e1;
