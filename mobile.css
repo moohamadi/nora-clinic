@@ -971,7 +971,7 @@ body:has(.doctor-rating-area) .footer {
  
   .site-header .brand-logo,
   .site-header .brand-text{
-    display: block;
+    display: none;
   }
 
   
