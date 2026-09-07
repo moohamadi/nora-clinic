@@ -39,7 +39,7 @@ body:has(.doctor-rating-area) {
   min-height: 100vh;
 }
 
-body:has(.doctor-rating-area) .footer {
+body:has(.doctor-rating-area) .copyright {
   margin-top: auto;
 }
 
@@ -163,24 +163,26 @@ body:has(.doctor-rating-area) .footer {
      دست‌نخورده مانده؛ فقط easing نرم‌تر و ورود پلکانی لینک‌ها
      در پایین فایل (بخش ANIMATIONS) اضافه شده است.
   ===================================================== */
-  .side-menu {
+
+.side-menu {
     display: block;
     position: fixed;
     top: 0;
-    right: -280px;
-    width: 260px;
+    right: 0;
+    width: 82%;
+    max-width: 320px;
     height: 100%;
     background: #fff;
     z-index: 200;
     padding: 20px;
-    transition: right 0.3s ease;
+    transform: translateX(100%); /* به‌جای right:-280px */
+    transition: transform 0.35s var(--ease-smooth);
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
-  }
+}
 
-  .side-menu.active {
-    right: 0;
-  }
-
+.side-menu.active {
+    transform: translateX(0); /* به‌جای right:0 */
+}
   .close-btn {
     background: none;
     border: none;
@@ -901,24 +903,28 @@ body:has(.doctor-rating-area) .footer {
      می‌شوند که .doctor-rating-area دارند (:has) و هیچ صفحه‌ی
      دیگری را تحت تأثیر قرار نمی‌دهند. عمداً بدون انیمیشن.
   ===================================================== */
-  body:has(.doctor-rating-area) .topbar {
-    max-width: none;
-    width: 100%;
-    border-radius: 0;
-  }
+  /* چسباندن فوتر به پایین صفحه در موبایل - روش مطمئن */
+@media (max-width: 768px) {
+    body:has(.doctor-rating-area) {
+        position: relative;
+        min-height: 100vh;
+        /* حذف display:flex از بادی تا ساختار صفحه بهم نریزد */
+    }
 
-  body:has(.doctor-rating-area) .insurance-header {
-    max-width: none;
-    width: 100%;
-    margin: 0 0 12px;
-    border-radius: 0;
-    padding: 0;
-  }
-
-  body:has(.doctor-rating-area) .footer {
-    max-width: none;
-    width: 100%;
-  }
+    body:has(.doctor-rating-area) .footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        margin-top: 0 !important; /* خنثی کردن margin-top:auto */
+    }
+    
+    /* اضافه کردن پدینگ به بادی تا محتوا زیر فوتر نرود */
+    body:has(.doctor-rating-area) {
+        padding-bottom: 200px; /* بسته به ارتفاع فوترتان این عدد را تنظیم کنید */
+    }
+}
 
   /* .doctor-rating-area و اجزای داخلش عمداً دست‌نخورده می‌مانند
      تا چیدمان دو ستونه‌ی دسکتاپ حفظ شود؛ خود کارت‌ها با اسکرول
