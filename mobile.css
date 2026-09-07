@@ -968,7 +968,13 @@ body:has(.doctor-rating-area) .footer {
     padding: 10px 12px;
     gap: 10px;
   }
+ 
+  .site-header .brand-logo,
+  .site-header .brand-text{
+    display: block;
+  }
 
+  
   .site-header .main-nav {
     overflow-x: auto;
     white-space: nowrap;
