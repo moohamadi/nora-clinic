@@ -789,7 +789,6 @@ body.page-home {
     gap:22px;
 
     margin:60px 0;
-
 }
 
 .feature-card{
@@ -2534,9 +2533,8 @@ body.page-shifts {
     font-weight: 500;
 
     padding: 29px 3px;
-
-    transition:
-        color 0.2s ease;
+    white-space: nowrap;
+    transition: color 0.2s ease;
 }
 
 

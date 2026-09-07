@@ -436,6 +436,26 @@ body:has(.doctor-rating-area) .footer {
     padding: 28px 16px 8px;
   }
 
+  .section-head.section-head {
+    text-align: center;
+    margin-bottom: 18px;
+  }
+
+  .section-head span {
+    color: var(--primary);
+    font-size: 12px;
+  }
+  .section-head h2,
+  .section-head h3 {
+    font-size: 19px;
+    margin: 4px 0 6px;
+    color: var(--text-dark);
+  }
+
+  .section-head p {
+    font-size: 12.5px;
+    color: var(--text-muted);
+  }
   .services-grid {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
@@ -940,6 +960,36 @@ body:has(.doctor-rating-area) .footer {
 
   .gallery-item {
     height: 140px;
+  }
+
+  /* هدر صفحاتی مثل شیفت پرسنل که هنوز از ساختار قدیمی site-header استفاده می‌کنند */
+  .site-header .header-container {
+    flex-wrap: nowrap;
+    padding: 10px 12px;
+    gap: 10px;
+  }
+
+  .site-header .main-nav {
+    overflow-x: auto;
+    white-space: nowrap;
+    flex: none;
+    gap: 12px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .site-header .nav-link,
+  .site-header .dropdown-toggle {
+    font-size: 12px;
+    white-space: nowrap;
+    padding: 8px 2px;
+  }
+
+  .site-header .header-actions .user-info div {
+    display: none;
+  }
+
+  .site-header .brand-text strong {
+    font-size: 14px;
   }
 
   /* =====================================================
