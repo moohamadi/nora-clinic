@@ -82,8 +82,8 @@ const doctors = [
         name: "دکتر راضیه قاسمی‌پور",
         specialty: "پزشک عمومی",
         image: "images/docters/راضیه قاسمی پور.png",
-        graduation: "۱۳۹۸",
-        university: "دانشگاه علوم پزشکی شیراز",
+        graduation: "۱۴۰۲",
+        university: "دانشگاه علوم پزشکی اراک",
         experience: "۱۳ سال",
         medicalCode: "۱۲۳۴۵"
     },
@@ -93,7 +93,7 @@ const doctors = [
         name: "دکتر علی ساروقی",
         specialty: "پزشک عمومی",
         image: "images/docters/علی ساروقی .png",
-        graduation: "۱۳۹۳",
+        graduation: "۱۴۰۲",
         university: "دانشگاه علوم پزشکی لرستان",
         experience: "۹ سال",
         medicalCode: "۱۵۲۳۴"
