@@ -83,38 +83,8 @@ const nurses = [
         university: "دانشگاه علوم پزشکی خرم‌آباد",
         experience: " 2 سال",
         licenseCode: "۲۳۴۵۶"
-   },
-{
- id: 6,
-        name: "نازنین مومنی",
-        specialty: "پرستار عمومی",
-        image: "images/nurses/مهسا کرمی.png",
-        graduation: "۱۴۰۲",
-        university: "دانشگاه علوم پزشکی خرم‌آباد",
-        experience: " ۴ سال",
-        licenseCode: "۲۳۴۵۶"
-   },
-   {
- id: 7,
-        name: "هانیه بازوند",
-        specialty: "پرستار عمومی",
-        image: "images/nurses/مهسا کرمی.png",
-        graduation: "۱۴۰۲",
-        university: "دانشگاه علوم پزشکی خرم‌آباد",
-        experience: " ۴ سال",
-        licenseCode: "۲۳۴۵۶"
-   },
-
-   {
- id: 8,
-        name: "حمید ندری",
-        specialty: "پرستار عمومی",
-        image: "images/nurses/مهسا کرمی.png",
-        graduation: "۱۴۰۲",
-        university: "دانشگاه علوم پزشکی خرم‌آباد",
-        experience: " ۴ سال",
-        licenseCode: "۲۳۴۵۶"
    }
+ 
 ];
 
 /* =====================================
