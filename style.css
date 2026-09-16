@@ -467,6 +467,21 @@ body.page-home {
     font-size: 16px;
 }
 
+/*=========================
+      کارت‌های خدمات قابل کلیک
+      (چون از article به a تبدیل شدن،
+       باید استایل پیش‌فرض لینک رو خنثی کنیم)
+=========================*/
+
+.services-grid a.service-card{
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.services-grid a.service-card:hover{
+    text-decoration: none;
+}
 
 /*=========================
       بخش پزشکان
