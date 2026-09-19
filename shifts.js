@@ -2,7 +2,7 @@ console.log("shifts.js loaded");
 
 /* =========================================================
    این فایل فقط توی shifts.html استفاده می‌شه.
-   شامل: تعویض تب پزشکان/پرستاران + کل مدیریت شیفت
+   شامل: تعویض تب پزشکان/پرستاران + جابه‌جایی ماه + کل مدیریت شیفت
    (خوندن از سرور، نمایش جدول، ورود مدیر، ویرایش با کلیک)
    کدهای شیفت: M=صبح  E=عصر  N=شب  X=پیک شب
    ========================================================= */
@@ -65,13 +65,147 @@ const shiftNames = {
     X: "پیک شب"
 };
 
+/* =====================================
+   حالت ماه انتخاب‌شده (تقویم شمسی)
+===================================== */
+
+const PERSIAN_MONTHS = [
+    'فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور',
+    'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'
+];
+
+function toPersianDigits(num) {
+    const fa = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    return String(num).replace(/[0-9]/g, function (d) { return fa[d]; });
+}
+
+function toEnglishDigits(str) {
+    const fa = '۰۱۲۳۴۵۶۷۸۹';
+    return String(str).replace(/[۰-۹]/g, function (d) { return fa.indexOf(d); });
+}
+
+// تشخیص سال کبیسه شمسی
+// نکته: این یه الگوریتم تقریبی بر پایه‌ی چرخه‌ی ۳۳ ساله است که برای چند دهه‌ی
+// آینده دقیقه؛ برای دقت کامل و بلندمدت بهتره از یه کتابخانه‌ی معتبر تقویم
+// شمسی (مثل jalaali-js) استفاده بشه.
+function isJalaliLeapYear(year) {
+    const leapRemainders = [1, 5, 9, 13, 17, 22, 26, 30];
+    const cycleYear = ((year % 33) + 33) % 33;
+    return leapRemainders.includes(cycleYear);
+}
+
+function getDaysInJalaliMonth(year, month) {
+    if (month <= 6) return 31;
+    if (month <= 11) return 30;
+    return isJalaliLeapYear(year) ? 30 : 29;
+}
+
+// مقدار پیش‌فرض؛ در startInit() از روی متن واقعی صفحه به‌روزرسانی می‌شه
+let currentJalaliYear = 1405;
+let currentJalaliMonth = 6;
+
+// خوندن ماه/سال فعلی از همون متنی که توی HTML نوشته شده (مثلاً «شهریور ۱۴۰۵»)
+function parseInitialMonthLabel() {
+    const label = document.querySelector('.current-month');
+    if (!label) return;
+
+    const parts = label.textContent.trim().split(/\s+/);
+    if (parts.length < 2) return;
+
+    const monthIndex = PERSIAN_MONTHS.indexOf(parts[0]);
+    const yearNum = Number(toEnglishDigits(parts[1]));
+
+    if (monthIndex === -1 || isNaN(yearNum)) return;
+
+    currentJalaliMonth = monthIndex + 1;
+    currentJalaliYear = yearNum;
+}
+
+function renderMonthLabel() {
+    const label = document.querySelector('.current-month');
+    if (!label) return;
+    label.textContent = PERSIAN_MONTHS[currentJalaliMonth - 1] + ' ' + toPersianDigits(currentJalaliYear);
+}
+
+/* =====================================
+   بازسازی ستون‌های روز بر اساس تعداد روزهای ماه انتخاب‌شده
+===================================== */
+
+function rebuildDayColumns(daysCount) {
+    document.querySelectorAll('.shift-table').forEach(function (table) {
+
+        // بازسازی هدر جدول (ستون نام دست‌نخورده می‌مونه)
+        const headRow = table.querySelector('thead tr');
+        if (headRow) {
+            const nameHeadTh = headRow.querySelector('th:first-child');
+            headRow.innerHTML = '';
+            if (nameHeadTh) headRow.appendChild(nameHeadTh);
+
+            for (let d = 1; d <= daysCount; d++) {
+                const th = document.createElement('th');
+                th.textContent = toPersianDigits(d);
+                headRow.appendChild(th);
+            }
+        }
+
+        // بازسازی سلول‌های خالی هر ردیف (اسم‌ها دست‌نخورده می‌مونن)
+        const nameClass = table.classList.contains('doctertable') ? 'doctor-name' : 'person-name';
+
+        table.querySelectorAll('tbody tr').forEach(function (row) {
+            const nameCell = row.querySelector('.' + nameClass);
+            row.innerHTML = '';
+            if (nameCell) row.appendChild(nameCell);
+
+            for (let d = 1; d <= daysCount; d++) {
+                row.appendChild(document.createElement('td'));
+            }
+        });
+    });
+}
+
+/* =====================================
+   جابه‌جایی بین ماه‌ها
+===================================== */
+
+async function onMonthChanged() {
+    renderMonthLabel();
+
+    const daysCount = getDaysInJalaliMonth(currentJalaliYear, currentJalaliMonth);
+    rebuildDayColumns(daysCount);
+
+    await fetchShiftsFromServer();
+    renderAllShiftTables();
+}
+
+function goToNextMonth() {
+    currentJalaliMonth++;
+    if (currentJalaliMonth > 12) {
+        currentJalaliMonth = 1;
+        currentJalaliYear++;
+    }
+    onMonthChanged();
+}
+
+function goToPrevMonth() {
+    currentJalaliMonth--;
+    if (currentJalaliMonth < 1) {
+        currentJalaliMonth = 12;
+        currentJalaliYear--;
+    }
+    onMonthChanged();
+}
+
+/* =====================================
+   دریافت شیفت‌ها از سرور (مخصوص ماه/سال جاری)
+===================================== */
+
 let shiftsData = { doctors: {}, nurses: {} };
 let isShiftAdmin = false;
 let shiftAdminPassword = '';
 
 async function fetchShiftsFromServer() {
     try {
-        const res = await fetch(`${SHIFT_API_BASE}/shifts`);
+        const res = await fetch(`${SHIFT_API_BASE}/shifts?year=${currentJalaliYear}&month=${currentJalaliMonth}`);
         shiftsData = await res.json();
     } catch (err) {
         console.error('خطا در دریافت شیفت‌ها از سرور:', err);
@@ -278,6 +412,8 @@ async function saveShift(group, person, day, code) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 password: shiftAdminPassword,
+                year: currentJalaliYear,
+                month: currentJalaliMonth,
                 group: group,
                 person: person,
                 day: day,
@@ -388,8 +524,25 @@ function initShiftAdminUI() {
     }
 }
 
+/* =====================================
+   راه‌اندازی اولیه‌ی صفحه
+===================================== */
+
 document.addEventListener('DOMContentLoaded', async function () {
     if (!document.querySelector('.shift-table-section')) return;
+
+    // خوندن ماه/سال از روی متن فعلی صفحه (مثلاً «شهریور ۱۴۰۵»)
+    parseInitialMonthLabel();
+
+    // اتصال دکمه‌های تغییر ماه
+    const prevBtn = document.getElementById('prev-month-btn');
+    const nextBtn = document.getElementById('next-month-btn');
+    if (prevBtn) prevBtn.addEventListener('click', goToPrevMonth);
+    if (nextBtn) nextBtn.addEventListener('click', goToNextMonth);
+
+    // ساخت تعداد ستون‌های روز متناسب با ماه فعلی
+    const daysCount = getDaysInJalaliMonth(currentJalaliYear, currentJalaliMonth);
+    rebuildDayColumns(daysCount);
 
     await fetchShiftsFromServer();
     renderAllShiftTables();

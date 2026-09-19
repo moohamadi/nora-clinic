@@ -37,6 +37,10 @@ const VALID_SECTIONS = ["doctors", "nurses", "pharmacy"];
 const VALID_SHIFT_GROUPS = ["doctors", "nurses"];
 const SINGLE_SHIFT_CODES = ["M", "E", "N", "X"];
 
+// ماه/سالی که داده‌های قدیمی (سند "main") قبل از اضافه شدن قابلیت
+// ماه‌بندی، برای آن ثبت شده بودند — فقط برای migration یک‌بارهٔ اولیه استفاده می‌شه.
+const LEGACY_DATA_MONTH_ID = "1405-6"; // شهریور ۱۴۰۵
+
 function isValidShiftCode(code) {
     if (code === "") return true;
     if (typeof code !== "string") return false;
@@ -45,6 +49,20 @@ function isValidShiftCode(code) {
     if (!parts.every(p => SINGLE_SHIFT_CODES.includes(p))) return false;
     if (new Set(parts).size !== parts.length) return false;
     return true;
+}
+
+/* =====================================================
+   ساخت شناسه‌ی سند شیفتِ یک ماه مشخص، مثلاً "1405-7"
+   اگر year/month نامعتبر یا ارسال‌نشده بود، null برمی‌گردونه
+   (یعنی به‌جای سند ماهانه، همون سند قدیمی "main" استفاده بشه)
+===================================================== */
+function buildShiftMonthId(year, month) {
+    const y = Number(year);
+    const m = Number(month);
+    if (!Number.isInteger(y) || !Number.isInteger(m) || m < 1 || m > 12) {
+        return null;
+    }
+    return `${y}-${m}`;
 }
 
 /* =====================================================
@@ -71,6 +89,26 @@ async function connectToDatabase() {
 }
 
 /* =====================================================
+   انتقال یک‌بارهٔ داده‌های قدیمیِ شیفت (سند "main")
+   به سند ماهانه‌ی مربوطه — تا داده‌های فعلی از دست نرن
+===================================================== */
+async function migrateLegacyShiftsDocument() {
+    try {
+        const legacy = await shiftsCollection.findOne({ _id: "main" });
+        if (!legacy) return;
+
+        const alreadyMigrated = await shiftsCollection.findOne({ _id: LEGACY_DATA_MONTH_ID });
+        if (alreadyMigrated) return;
+
+        const { _id, ...rest } = legacy;
+        await shiftsCollection.insertOne({ _id: LEGACY_DATA_MONTH_ID, ...rest });
+        console.log(`✅ داده‌های قدیمی شیفت به سند ماه «${LEGACY_DATA_MONTH_ID}» منتقل شدند`);
+    } catch (err) {
+        console.error("خطا در انتقال داده‌های قدیمی شیفت:", err);
+    }
+}
+
+/* =====================================================
    حذف فیلد _id قبل از $set
    (چون _id غیرقابل تغییره و MongoDB با ست کردنش دوباره خطا میده)
 ===================================================== */
@@ -80,11 +118,13 @@ function stripId(data) {
 }
 
 /* =====================================================
-   خواندن/نوشتن شیفت‌ها از MongoDB
+   خواندن/نوشتن شیفت‌ها از MongoDB (مخصوص یک ماه مشخص)
+   monthId = null یعنی برگشت به سند قدیمیِ "main" (سازگاری با نسخه‌ی قبلی)
 ===================================================== */
-async function readShiftsData() {
+async function readShiftsData(monthId) {
     try {
-        const data = await shiftsCollection.findOne({ _id: "main" });
+        const id = monthId || "main";
+        const data = await shiftsCollection.findOne({ _id: id });
         return {
             doctors: (data && data.doctors) || {},
             nurses: (data && data.nurses) || {}
@@ -95,10 +135,11 @@ async function readShiftsData() {
     }
 }
 
-async function writeShiftsData(data) {
+async function writeShiftsData(monthId, data) {
     try {
+        const id = monthId || "main";
         await shiftsCollection.updateOne(
-            { _id: "main" },
+            { _id: id },
             { $set: stripId(data) },
             { upsert: true }
         );
@@ -221,6 +262,11 @@ function serveStaticFile(req, res) {
    سرور اصلی
 ===================================================== */
 const server = http.createServer(async (req, res) => {
+    // آدرس و query string رو یک‌بار همین اول جدا می‌کنیم
+    // (چون حالا GET /shifts هم می‌تونه با ?year=...&month=... بیاد)
+    const parsedUrl = new URL(req.url, "http://localhost");
+    const pathname = parsedUrl.pathname;
+
     // CORS preflight
     if (req.method === "OPTIONS") {
         res.writeHead(204, {
@@ -233,7 +279,7 @@ const server = http.createServer(async (req, res) => {
     }
 
     // -------- GET /rating --------
-    if (req.url === "/rating" && req.method === "GET") {
+    if (pathname === "/rating" && req.method === "GET") {
         console.log("REQUEST RATING (GET)");
         const data = await readRatingData();
         sendJson(res, 200, data);
@@ -241,7 +287,7 @@ const server = http.createServer(async (req, res) => {
     }
 
     // -------- POST /rating --------
-    if (req.url === "/rating" && req.method === "POST") {
+    if (pathname === "/rating" && req.method === "POST") {
         console.log("REQUEST RATING (POST)");
         try {
             const body = await readRequestBody(req);
@@ -278,16 +324,20 @@ const server = http.createServer(async (req, res) => {
         return;
     }
 
-    // -------- GET /shifts --------
-    if (req.url === "/shifts" && req.method === "GET") {
-        console.log("REQUEST SHIFTS (GET)");
-        const data = await readShiftsData();
+    // -------- GET /shifts?year=1405&month=7 --------
+    if (pathname === "/shifts" && req.method === "GET") {
+        const year = parsedUrl.searchParams.get("year");
+        const month = parsedUrl.searchParams.get("month");
+        const monthId = buildShiftMonthId(year, month);
+
+        console.log("REQUEST SHIFTS (GET)", monthId || "main (بدون year/month — حالت قدیمی)");
+        const data = await readShiftsData(monthId);
         sendJson(res, 200, data);
         return;
     }
 
     // -------- POST /shifts/login --------
-    if (req.url === "/shifts/login" && req.method === "POST") {
+    if (pathname === "/shifts/login" && req.method === "POST") {
         try {
             const body = await readRequestBody(req);
             if (body.password === SHIFT_ADMIN_PASSWORD) {
@@ -302,11 +352,11 @@ const server = http.createServer(async (req, res) => {
     }
 
     // -------- POST /shifts --------
-    if (req.url === "/shifts" && req.method === "POST") {
+    if (pathname === "/shifts" && req.method === "POST") {
         console.log("REQUEST SHIFTS (POST)");
         try {
             const body = await readRequestBody(req);
-            const { password, group, person, day, code } = body;
+            const { password, year, month, group, person, day, code } = body;
 
             if (password !== SHIFT_ADMIN_PASSWORD) {
                 sendJson(res, 401, { error: "رمز عبور اشتباه است" });
@@ -330,7 +380,9 @@ const server = http.createServer(async (req, res) => {
                 return;
             }
 
-            const data = await readShiftsData();
+            const monthId = buildShiftMonthId(year, month);
+
+            const data = await readShiftsData(monthId);
             if (!data[group][person]) {
                 data[group][person] = {};
             }
@@ -339,7 +391,7 @@ const server = http.createServer(async (req, res) => {
             } else {
                 data[group][person][dayNum] = code;
             }
-            await writeShiftsData(data);
+            await writeShiftsData(monthId, data);
             sendJson(res, 200, { success: true });
         } catch (err) {
             sendJson(res, 400, { error: err.message });
@@ -356,9 +408,11 @@ const server = http.createServer(async (req, res) => {
 ===================================================== */
 const PORT = process.env.PORT || 3000;
 
-// اول به دیتابیس وصل شو، بعد سرور رو راه‌اندازی کن
-connectToDatabase().then(() => {
-    server.listen(PORT, () => {
-        console.log(`🚀 Server running on http://localhost:${PORT}`);
+// اول به دیتابیس وصل شو، بعد داده‌ی قدیمی رو منتقل کن، بعد سرور رو راه‌اندازی کن
+connectToDatabase()
+    .then(() => migrateLegacyShiftsDocument())
+    .then(() => {
+        server.listen(PORT, () => {
+            console.log(`🚀 Server running on http://localhost:${PORT}`);
+        });
     });
-});
