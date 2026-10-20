@@ -60,6 +60,14 @@ const pharmacyStaff = [
          role: "تکنسین داروخانه",
        image: "images/pharmacy/....png",
          experience: "2 سال",
+    },
+    
+    {
+       id: 4,
+        name: " یاسمن حاجی پور",
+         role: "تکنسین داروخانه",
+       image: "images/pharmacy/....png",
+         experience: "2 سال",
     }
 ];
 
