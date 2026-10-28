@@ -39,7 +39,7 @@ const nurses = [
         name: "مهسا کرمی",
         specialty: "پرستار عمومی",
         image: "images/nurses/مهسا کرمی.png",
-        graduation: "۱403",
+        graduation: "1403",
         university: "دانشگاه علوم پزشکی خرم‌آباد",
         experience: " 2 سال",
         licenseCode: "۲۳۴۵۶"
@@ -74,7 +74,8 @@ const nurses = [
         experience: "۷ سال",
         licenseCode: "۲۰۵۴۳"
      },
-   {
+   
+     {
      id: 5,
         name: "مائده معزز",
         specialty: "پرستار عمومی",
@@ -82,6 +83,16 @@ const nurses = [
         graduation: "۱۴۰۳",
         university: "دانشگاه علوم پزشکی خرم‌آباد",
         experience: " 2 سال",
+        licenseCode: "۲۳۴۵۶"
+   },
+     {
+     id: 6,
+        name: "هانیه بازوند",
+        specialty: "پرستار عمومی",
+        image: "images/nurses/مهسا کرمی.png",
+        graduation: "۱۴۰۲",
+        university: "دانشگاه علوم پزشکی خرم‌آباد",
+        experience: " 3 سال",
         licenseCode: "۲۳۴۵۶"
    }
  
